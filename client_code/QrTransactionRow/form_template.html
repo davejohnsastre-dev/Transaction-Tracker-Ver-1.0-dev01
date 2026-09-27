@@ -1,0 +1,7 @@
+<anvil-form container="DataRowPanel" prop:role="record-row" prop:auto_display_data="false">
+  <anvil-component type="Label" name="details_label" prop:role="record-details" bind:text="self.item['details']" container:column="details"></anvil-component>
+  <anvil-component type="FlowPanel" name="status_summary" prop:role="record-status" container:column="status">
+    <anvil-component type="Label" name="status_caption" prop:text="STATUS" prop:role="status-caption"></anvil-component>
+    <anvil-component type="Label" name="status_label" prop:role="status-badge" bind:text="self.item['status']"></anvil-component>
+  </anvil-component>
+</anvil-form>

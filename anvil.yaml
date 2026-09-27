@@ -1,0 +1,207 @@
+allow_embedding: false
+correct_dependency_ids: {}
+db_schema:
+  audit_logs:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: timestamp
+      type: datetime
+    - admin_ui: {order: 1}
+      name: tdn
+      type: string
+    - admin_ui: {order: 2}
+      name: operator
+      type: string
+    - admin_ui: {order: 3}
+      name: details
+      type: string
+    server: full
+    title: Audit Logs
+  auth_sessions:
+    client: none
+    columns:
+    - admin_ui: {client_hidden: true, order: 0}
+      name: token_hash
+      type: string
+    - admin_ui: {order: 1}
+      name: username
+      type: string
+    - admin_ui: {order: 2}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 3}
+      name: expires_at
+      type: datetime
+    - admin_ui: {order: 4}
+      name: revoked_at
+      type: datetime
+    server: full
+    title: Authentication Sessions
+  registered_devices:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: device_name
+      type: string
+    - admin_ui: {client_hidden: true, order: 1}
+      name: token_hash
+      type: string
+    - admin_ui: {order: 2}
+      name: enabled
+      type: bool
+    - admin_ui: {order: 3}
+      name: registered_at
+      type: datetime
+    - admin_ui: {order: 4}
+      name: last_seen_at
+      type: datetime
+    server: full
+    title: Registered Devices
+  statuses:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: name
+      type: string
+    server: full
+    title: Statuses
+  transaction_slips:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: slip_id
+      type: string
+    - admin_ui: {order: 1}
+      name: requestor
+      type: string
+    - admin_ui: {order: 2}
+      client_hidden: false
+      name: requestor_info
+      type: string
+    - admin_ui: {order: 3}
+      name: qr_code
+      type: media
+    indexes: []
+    server: full
+    title: Transaction Slips
+  transaction_types:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      client_hidden: false
+      name: transaction_name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      client_hidden: false
+      name: transaction_code
+      type: string
+    indexes: []
+    server: full
+    title: Transaction Types
+  transactions:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 1}
+      name: tdn
+      type: string
+    - admin_ui: {order: 2}
+      name: pin
+      type: string
+    - admin_ui: {order: 3}
+      name: owner
+      type: string
+    - admin_ui: {order: 4}
+      name: lot_no
+      type: string
+    - admin_ui: {order: 5}
+      name: transaction_type
+      type: string
+    - admin_ui: {order: 6}
+      name: requestor
+      type: string
+    - admin_ui: {order: 7}
+      client_hidden: false
+      name: requestor_info
+      type: string
+    - admin_ui: {order: 8}
+      name: encoder
+      type: string
+    - admin_ui: {order: 9}
+      name: status
+      type: string
+    - admin_ui: {order: 10}
+      name: remarks
+      type: string
+    - admin_ui: {order: 11}
+      name: latest_activity
+      type: string
+    - admin_ui: {order: 12}
+      name: slip_id
+      type: string
+    - admin_ui: {order: 13, width: 200}
+      client_hidden: false
+      name: contact_person
+      type: string
+    - admin_ui: {order: 14, width: 200}
+      client_hidden: false
+      name: contact_person_info
+      type: string
+    - admin_ui: {order: 15}
+      name: transaction_slip
+      target: transaction_slips
+      type: link_single
+    indexes: []
+    server: full
+    title: Transactions
+  users:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: username
+      type: string
+    - admin_ui: {order: 1}
+      name: employee_name
+      type: string
+    - admin_ui: {order: 2}
+      client_hidden: true
+      name: password
+      type: string
+    - admin_ui: {client_hidden: true, order: 3}
+      name: password_hash
+      type: string
+    - admin_ui: {order: 4}
+      name: enabled
+      type: bool
+    - admin_ui: {order: 5}
+      name: role
+      type: string
+    server: full
+    title: Users
+  verification_settings:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: device_token_required
+      type: bool
+    - admin_ui: {order: 1}
+      name: updated_at
+      type: datetime
+    server: full
+    title: Verification Settings
+dependencies: []
+metadata: {logo_img: 'asset:MASSO LOGO 20P.png', title: Transaction Tracker}
+name: Clone of Transaction Tracker Ver. 1.0X
+package_name: Transaction_Tracker_System
+runtime_options:
+  client_version: '3'
+  server_spec: {base: python310-minimal}
+  version: 3
+services:
+- client_config: {enable_v2: true}
+  server_config: {}
+  source: /runtime/services/tables.yml
+startup: {module: Form1, type: form}

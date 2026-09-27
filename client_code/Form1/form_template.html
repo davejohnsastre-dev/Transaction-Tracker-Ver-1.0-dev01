@@ -1,0 +1,260 @@
+<anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
+  <anvil-block slot="actions">
+    <anvil-component type="Button" name="change_pin_button" prop:text="Change password" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="settings_button" prop:text="Settings" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="logout_button" prop:text="Log out" prop:role="secondary-button" prop:visible="false"></anvil-component>
+  </anvil-block>
+  <anvil-block slot="content">
+    <anvil-component type="ColumnPanel" name="login_panel" prop:role="auth-card">
+      <anvil-component type="Label" name="login_heading" prop:text="Database login" prop:role="section-title"></anvil-component>
+      <anvil-component type="Label" name="login_subtitle" prop:text="Sign in to manage transaction records." prop:role="muted-text"></anvil-component>
+      <anvil-component type="Label" name="username_label" prop:text="User name" prop:role="field-label"></anvil-component>
+      <anvil-component type="TextBox" name="username_box" prop:placeholder="Enter user name"></anvil-component>
+      <anvil-component type="Label" name="pin_label" prop:text="Password" prop:role="field-label"></anvil-component>
+      <anvil-component type="TextBox" name="pin_box" prop:placeholder="Enter password" prop:hide_text="true"></anvil-component>
+      <anvil-component type="Button" name="login_button" prop:text="Secure login" prop:role="primary-button"></anvil-component>
+      <anvil-component type="Button" name="scan_qr_button" prop:text="Scan transaction QR code" prop:role="secondary-button"></anvil-component>
+      <anvil-component type="Label" name="login_message" prop:role="error-text"></anvil-component>
+    </anvil-component>
+    <anvil-component type="ColumnPanel" name="app_panel" prop:visible="false">
+      <anvil-component type="FlowPanel" name="dashboard_heading" prop:role="dashboard-heading">
+        <anvil-component type="ColumnPanel" name="heading_text">
+          <anvil-component type="Label" name="dashboard_title" prop:text="Transaction tracker" prop:role="dashboard-title"></anvil-component>
+          <anvil-component type="Label" name="welcome_label" prop:role="muted-text"></anvil-component>
+        </anvil-component>
+        <div class="dashboard-heading-action">
+          <anvil-component type="Button" name="new_record_button" prop:text="+ New transaction" prop:role="primary-button"></anvil-component>
+        </div>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="records_card" prop:role="card">
+        <anvil-component type="FlowPanel" name="toolbar" prop:role="toolbar">
+          <anvil-component type="TextBox" name="search_box" prop:placeholder="Search anything..."></anvil-component>
+          <anvil-component type="DropDown" name="type_filter" prop:include_placeholder="true" prop:placeholder="All types"></anvil-component>
+          <anvil-component type="DropDown" name="status_filter" prop:include_placeholder="true" prop:placeholder="All statuses"></anvil-component>
+          <div class="toolbar-actions">
+            <anvil-component type="Button" name="search_button" prop:text="Search" prop:role="primary-button"></anvil-component>
+            <anvil-component type="Button" name="clear_button" prop:text="Clear" prop:role="secondary-button"></anvil-component>
+            <anvil-component type="Button" name="refresh_button" prop:text="Refresh" prop:role="secondary-button"></anvil-component>
+          </div>
+        </anvil-component>
+          <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
+        <div class="records-table-viewport">
+          <div class="records-table-header">
+            <anvil-component type="Button" name="sort_created_button" prop:text="↓" prop:role="sort-button" prop:tooltip="Newest transactions first"></anvil-component>
+            <anvil-component type="Label" name="records_header_details" prop:text="Transaction details" prop:role="records-header-details"></anvil-component>
+          </div>
+          <anvil-component type="DataGrid" name="records_grid" prop:role="records-table">
+            <anvil-component type="RepeatingPanel" name="records_panel" prop:item_template="Transaction_Tracker_System.TransactionRow"></anvil-component>
+          </anvil-component>
+        </div>
+        <anvil-component type="FlowPanel" name="pagination_bar" prop:role="pagination-bar">
+          <anvil-component type="Label" name="page_info" prop:role="muted-text"></anvil-component>
+          <anvil-component type="Button" name="previous_button" prop:text="Previous" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="next_button" prop:text="Next" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="record_editor" prop:role="record-entry-view" prop:visible="false">
+        <anvil-component type="ColumnPanel" name="record_entry_card" prop:role="record-entry-card">
+          <anvil-component type="Label" name="editor_heading" prop:text="Create new transaction" prop:role="section-title"></anvil-component>
+          <anvil-component type="Label" name="requestor_field_label" prop:text="Requestor" prop:role="field-label"></anvil-component>
+          <anvil-component type="TextBox" name="requestor_box"></anvil-component>
+          <anvil-component type="Label" name="requestor_info_field_label" prop:text="Contact info" prop:role="field-label"></anvil-component>
+          <anvil-component type="TextBox" name="requestor_info_box"></anvil-component>
+          <anvil-component type="Label" name="transactions_heading" prop:text="Transaction items" prop:role="section-title"></anvil-component>
+          <div class="transaction-table-viewport">
+            <anvil-component type="DataGrid" name="transaction_items_grid" prop:role="transaction-table-grid">
+              <anvil-component type="RepeatingPanel" name="transaction_items_panel" prop:item_template="Transaction_Tracker_System.TransactionRequestRow"></anvil-component>
+            </anvil-component>
+          </div>
+          <anvil-component type="Button" name="add_transaction_button" prop:text="+ Add transaction" prop:role="primary-button"></anvil-component>
+          <anvil-component type="ColumnPanel" name="transaction_modal" prop:role="transaction-modal" prop:visible="false">
+            <anvil-component type="FlowPanel" name="transaction_modal_header" prop:role="modal-header">
+              <anvil-component type="Label" name="modal_heading" prop:text="Add transaction" prop:role="section-title"></anvil-component>
+              <anvil-component type="Button" name="cancel_transaction_button" prop:text="Close" prop:role="secondary-button"></anvil-component>
+            </anvil-component>
+            <anvil-component type="Label" name="parse_hint" prop:text="Copy the property data, then use the clipboard button. If access is blocked, paste it into the box below and click Parse again." prop:role="muted-text" container:grid_position="GUPINO,QCOGDX"></anvil-component>
+            <anvil-component type="Button" name="modal_parse_button" prop:text="Parse data from clipboard" prop:role="secondary-button"></anvil-component>
+            <anvil-component type="TextArea" name="modal_raw_data_box" prop:placeholder="Paste property data here if clipboard access is blocked" container:grid_position="GUPINO,QCOGDX"></anvil-component>
+            <anvil-component type="Label" name="modal_tdn_label" prop:text="TDN reference" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="modal_tdn_box" prop:placeholder="0000-00-0000-00000"></anvil-component>
+            <anvil-component type="Label" name="modal_pin_label" prop:text="PIN property index" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="modal_pin_box" prop:placeholder="000-00-0000-000-00"></anvil-component>
+            <anvil-component type="Label" name="modal_owner_label" prop:text="Owner / declarant name" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="modal_owner_box" prop:placeholder="SURNAME, FIRST NAME, M.I."></anvil-component>
+            <anvil-component type="Label" name="modal_lot_label" prop:text="Lot number" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="modal_lot_box" prop:placeholder="Optional lot number"></anvil-component>
+            <anvil-component type="Label" name="modal_contact_person_label" prop:text="Contact person" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="modal_contact_person_box"></anvil-component>
+            <anvil-component type="Label" name="modal_contact_person_info_label" prop:text="Contact person info" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="modal_contact_person_info_box"></anvil-component>
+            <anvil-component type="Label" name="modal_type_label" prop:text="Transaction" prop:role="field-label"></anvil-component>
+            <anvil-component type="DropDown" name="modal_transaction_type_box" prop:include_placeholder="true" prop:placeholder="Select transaction type"></anvil-component>
+            <anvil-component type="Label" name="modal_status_label" prop:text="Status" prop:role="field-label"></anvil-component>
+            <anvil-component type="DropDown" name="modal_status_box" prop:include_placeholder="true" prop:placeholder="Select status"></anvil-component>
+            <anvil-component type="Label" name="modal_remarks_label" prop:text="Remarks" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextArea" name="modal_remarks_box" prop:placeholder="Optional comments"></anvil-component>
+            <anvil-component type="FlowPanel" name="transaction_modal_actions" prop:role="form-actions">
+              <anvil-component type="Button" name="cancel_transaction_button_bottom" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+              <anvil-component type="Button" name="save_transaction_item_button" prop:text="Add transaction" prop:role="primary-button"></anvil-component>
+            </anvil-component>
+            <anvil-component type="Label" name="transaction_modal_message" prop:role="error-text"></anvil-component>
+          </anvil-component>
+          <anvil-component type="FlowPanel" name="editor_actions" prop:role="form-actions">
+            <anvil-component type="Button" name="cancel_editor_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+            <anvil-component type="Button" name="save_record_button" prop:text="Save transaction slip" prop:role="primary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="Label" name="editor_message" prop:role="error-text"></anvil-component>
+        </anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="update_modal" prop:role="update-modal" prop:visible="false">
+        <anvil-component type="FlowPanel" name="update_modal_header" prop:role="modal-header">
+          <anvil-component type="Label" name="update_modal_heading" prop:text="Update transaction" prop:role="section-title"></anvil-component>
+          <anvil-component type="Button" name="cancel_update_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="update_record_reference" prop:role="muted-text"></anvil-component>
+        <anvil-component type="Label" name="update_status_label" prop:text="Select status" prop:role="field-label"></anvil-component>
+        <anvil-component type="FlowPanel" name="update_status_options" prop:role="update-status-options">
+          <anvil-component type="RadioButton" name="update_status_option_1" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_2" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_3" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_4" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_5" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_6" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_7" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+          <anvil-component type="RadioButton" name="update_status_option_8" prop:group_name="transaction-update-status" prop:role="update-status-option" prop:visible="false"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="update_remarks_label" prop:text="Remarks" prop:role="field-label"></anvil-component>
+        <anvil-component type="TextArea" name="update_remarks_box" prop:placeholder="Add or update remarks"></anvil-component>
+        <anvil-component type="FlowPanel" name="update_modal_actions" prop:role="form-actions">
+          <anvil-component type="Button" name="cancel_update_button_bottom" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="save_update_button" prop:text="Save changes" prop:role="primary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="update_modal_message" prop:role="error-text"></anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="pin_editor" prop:role="card" prop:visible="false">
+        <anvil-component type="Label" name="pin_editor_heading" prop:text="Update password" prop:role="section-title"></anvil-component>
+        <anvil-component type="TextBox" name="old_pin_box" prop:placeholder="Current password" prop:hide_text="true"></anvil-component>
+        <anvil-component type="TextBox" name="new_pin_box" prop:placeholder="New password" prop:hide_text="true"></anvil-component>
+        <anvil-component type="TextBox" name="confirm_pin_box" prop:placeholder="Confirm new password" prop:hide_text="true"></anvil-component>
+        <anvil-component type="FlowPanel" name="pin_actions" prop:role="form-actions">
+          <anvil-component type="Button" name="cancel_pin_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="save_pin_button" prop:text="Save new password" prop:role="primary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="pin_message" prop:role="error-text"></anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="logs_editor" prop:role="audit-modal" prop:visible="false">
+        <anvil-component type="FlowPanel" name="logs_modal_header" prop:role="modal-header">
+          <anvil-component type="Label" name="logs_heading" prop:role="section-title"></anvil-component>
+          <anvil-component type="Button" name="close_logs_button" prop:text="Close" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="RepeatingPanel" name="logs_panel" prop:item_template="Transaction_Tracker_System.AuditLogRow" prop:role="audit-list"></anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="settings_editor" prop:role="settings-editor" prop:visible="false">
+        <anvil-component type="FlowPanel" name="settings_header" prop:role="modal-header">
+          <anvil-component type="Label" name="settings_heading" prop:text="Settings" prop:role="section-title"></anvil-component>
+          <anvil-component type="Button" name="settings_back_button" prop:text="Back to transactions" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="settings_message" prop:role="settings-message" prop:visible="false"></anvil-component>
+        <anvil-component type="FlowPanel" name="settings_selector" prop:role="settings-selector">
+          <anvil-component type="Button" name="settings_users_button" prop:text="Users" prop:role="primary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_statuses_button" prop:text="Status" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_types_button" prop:text="Transaction types" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_devices_button" prop:text="Devices" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="settings_selector_hint" prop:text="Select a settings category to continue." prop:role="muted-text"></anvil-component>
+        <anvil-component type="ColumnPanel" name="user_settings_section" prop:role="settings-section" prop:visible="false">
+          <anvil-component type="Label" name="user_settings_heading" prop:text="Users" prop:role="section-title"></anvil-component>
+          <anvil-component type="Label" name="user_settings_hint" prop:text="View the current user accounts or add and modify users." prop:role="muted-text"></anvil-component>
+          <anvil-component type="FlowPanel" name="user_settings_actions" prop:role="form-actions">
+            <anvil-component type="Button" name="register_user_button" prop:text="Add user" prop:role="primary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="RepeatingPanel" name="users_panel" prop:item_template="Transaction_Tracker_System.AdminSettingRow" prop:role="settings-list"></anvil-component>
+        </anvil-component>
+        <anvil-component type="ColumnPanel" name="status_settings_section" prop:role="settings-section" prop:visible="false">
+          <anvil-component type="Label" name="status_settings_heading" prop:text="Statuses" prop:role="section-title"></anvil-component>
+          <anvil-component type="Label" name="status_settings_hint" prop:text="View the current status options or add and modify statuses." prop:role="muted-text"></anvil-component>
+          <anvil-component type="FlowPanel" name="status_settings_actions" prop:role="form-actions">
+            <anvil-component type="Button" name="add_status_button" prop:text="Add status" prop:role="primary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="RepeatingPanel" name="statuses_panel" prop:item_template="Transaction_Tracker_System.AdminSettingRow" prop:role="settings-list"></anvil-component>
+        </anvil-component>
+        <anvil-component type="ColumnPanel" name="type_settings_section" prop:role="settings-section" prop:visible="false">
+          <anvil-component type="Label" name="type_settings_heading" prop:text="Transaction types" prop:role="section-title"></anvil-component>
+          <anvil-component type="Label" name="type_settings_hint" prop:text="View the current transaction types or add and modify them." prop:role="muted-text"></anvil-component>
+          <anvil-component type="FlowPanel" name="type_settings_actions" prop:role="form-actions">
+            <anvil-component type="Button" name="add_type_button" prop:text="Add transaction type" prop:role="primary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="RepeatingPanel" name="types_panel" prop:item_template="Transaction_Tracker_System.AdminSettingRow" prop:role="settings-list"></anvil-component>
+        </anvil-component>
+        <anvil-component type="ColumnPanel" name="device_settings_section" prop:role="settings-section" prop:visible="false">
+          <anvil-component type="Label" name="device_settings_heading" prop:text="Registered devices" prop:role="section-title"></anvil-component>
+          <anvil-component type="Label" name="device_settings_hint" prop:text="Register this browser to allow it to open QR verification pages without signing in. The QR code itself contains only the slip ID." prop:role="muted-text"></anvil-component>
+          <anvil-component type="FlowPanel" name="verification_access_policy" prop:role="settings-toggle">
+            <anvil-component type="Label" name="verification_access_policy_label" prop:role="row-primary"></anvil-component>
+            <anvil-component type="Label" name="verification_access_policy_status" prop:role="muted-text"></anvil-component>
+            <anvil-component type="Button" name="device_token_requirement_button" prop:text="Turn off requirement" prop:role="secondary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="FlowPanel" name="device_settings_actions" prop:role="form-actions">
+            <anvil-component type="TextBox" name="device_name_box" prop:placeholder="e.g. Front desk tablet"></anvil-component>
+            <anvil-component type="Button" name="register_device_button" prop:text="Register this device" prop:role="primary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="RepeatingPanel" name="devices_panel" prop:item_template="Transaction_Tracker_System.DeviceSettingRow" prop:role="settings-list"></anvil-component>
+        </anvil-component>
+        <anvil-component type="ColumnPanel" name="settings_modal" prop:role="settings-modal" prop:visible="false">
+          <anvil-component type="FlowPanel" name="settings_modal_header" prop:role="modal-header">
+            <anvil-component type="Label" name="settings_modal_heading" prop:role="section-title"></anvil-component>
+            <anvil-component type="Button" name="settings_modal_cancel_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+          </anvil-component>
+          <anvil-component type="Label" name="settings_modal_message" prop:role="error-text" prop:visible="false"></anvil-component>
+          <anvil-component type="ColumnPanel" name="settings_user_fields" prop:visible="false">
+            <anvil-component type="Label" name="settings_modal_username_label" prop:text="Username" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="settings_modal_username_box" prop:placeholder="e.g. assessor"></anvil-component>
+            <anvil-component type="Label" name="settings_modal_employee_name_label" prop:text="Employee name" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="settings_modal_employee_name_box" prop:placeholder="Full name"></anvil-component>
+            <anvil-component type="Label" name="settings_modal_password_label" prop:text="Password" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="settings_modal_password_box" prop:placeholder="Temporary password" prop:hide_text="true"></anvil-component>
+            <anvil-component type="FlowPanel" name="settings_modal_user_access" prop:role="settings-user-access">
+              <anvil-component type="Label" name="settings_modal_user_access_label" prop:role="muted-text"></anvil-component>
+              <anvil-component type="Button" name="settings_modal_user_access_button" prop:role="secondary-button"></anvil-component>
+            </anvil-component>
+          </anvil-component>
+          <anvil-component type="ColumnPanel" name="settings_status_fields" prop:visible="false">
+            <anvil-component type="Label" name="settings_modal_status_name_label" prop:text="Status name" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="settings_modal_status_name_box" prop:placeholder="e.g. FOR INSPECTION"></anvil-component>
+          </anvil-component>
+          <anvil-component type="ColumnPanel" name="settings_type_fields" prop:visible="false">
+            <anvil-component type="Label" name="settings_modal_type_name_label" prop:text="Transaction type" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="settings_modal_type_name_box" prop:placeholder="e.g. SEGREGATION"></anvil-component>
+            <anvil-component type="Label" name="settings_modal_type_code_label" prop:text="Code (optional)" prop:role="field-label"></anvil-component>
+            <anvil-component type="TextBox" name="settings_modal_type_code_box" prop:placeholder="e.g. SEG"></anvil-component>
+          </anvil-component>
+          <anvil-component type="FlowPanel" name="settings_modal_actions" prop:role="form-actions">
+            <anvil-component type="Button" name="settings_modal_cancel_bottom_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+            <anvil-component type="Button" name="settings_modal_save_button" prop:text="Save" prop:role="primary-button"></anvil-component>
+          </anvil-component>
+        </anvil-component>
+      </anvil-component>
+      <anvil-component type="Button" name="print_slip_button" prop:text="Print last routing slip" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    </anvil-component>
+    <anvil-component type="ColumnPanel" name="print_slip" prop:role="print-slip" prop:visible="false">
+      <anvil-component type="FlowPanel" name="print_meta" prop:role="print-meta">
+        <anvil-component type="Label" name="print_date" prop:role="print-meta-date"></anvil-component>
+        <anvil-component type="Label" name="print_document_title" prop:text="Transaction Tracker" prop:role="print-meta-title"></anvil-component>
+        <anvil-component type="Image" name="print_qr_code" prop:role="print-qr-code" prop:alt_text="Scan to verify this transaction slip"></anvil-component>
+      </anvil-component>
+      <anvil-component type="Label" name="print_office" prop:text="MUNICIPAL ASSESSOR'S OFFICE" prop:role="print-title"></anvil-component>
+      <anvil-component type="Label" name="print_location" prop:text="Province of Davao del Norte · Municipality of Santo Tomas" prop:role="print-subtitle"></anvil-component>
+      <anvil-component type="Label" name="print_requestor" prop:role="print-field"></anvil-component>
+      <anvil-component type="Label" name="print_requestor_info" prop:role="print-field"></anvil-component>
+      <anvil-component type="Label" name="print_slip_id" prop:role="print-field"></anvil-component>
+      <anvil-component type="Label" name="print_transactions" prop:role="print-lines"></anvil-component>
+      <anvil-component type="FlowPanel" name="print_footer" prop:role="print-footer">
+        <anvil-component type="Label" name="print_footer_url" prop:role="print-footer-url"></anvil-component>
+        <anvil-component type="Label" name="print_page_number" prop:text="1/1" prop:role="print-page-number"></anvil-component>
+      </anvil-component>
+    </anvil-component>
+  </anvil-block>
+  <anvil-block slot="title">
+    <anvil-component type="Label" name="page_title" prop:text="Transaction tracker system" prop:role="h1"></anvil-component>
+  </anvil-block>
+</anvil-form>

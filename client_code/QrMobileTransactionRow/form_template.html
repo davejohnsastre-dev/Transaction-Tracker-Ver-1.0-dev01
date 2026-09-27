@@ -1,0 +1,38 @@
+<anvil-form container="ColumnPanel" prop:role="qr-mobile-record">
+  <anvil-component type="FlowPanel" name="record_header" prop:role="qr-mobile-record-header">
+    <anvil-component type="Label" name="transaction_type_label" prop:role="qr-mobile-transaction-type" bind:text="self.item['transaction_type']"></anvil-component>
+    <anvil-component type="Label" name="status_label" prop:role="qr-mobile-status-badge" bind:text="self.item['status']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="tdn_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="tdn_caption" prop:text="TDN" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="tdn_value" prop:role="qr-mobile-field-value" bind:text="self.item['tdn']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="pin_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="pin_caption" prop:text="PIN" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="pin_value" prop:role="qr-mobile-field-value" bind:text="self.item['pin']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="owner_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="owner_caption" prop:text="OWNER / DECLARANT" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="owner_value" prop:role="qr-mobile-field-value" bind:text="self.item['owner']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="lot_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="lot_caption" prop:text="LOT NO." prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="lot_value" prop:role="qr-mobile-field-value" bind:text="self.item['lot_no']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="contact_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="contact_caption" prop:text="CONTACT PERSON" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="contact_value" prop:role="qr-mobile-field-value" bind:text="self.item['contact_person']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="contact_info_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="contact_info_caption" prop:text="CONTACT PERSON INFO" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="contact_info_value" prop:role="qr-mobile-field-value" bind:text="self.item['contact_person_info']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="remarks_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="remarks_caption" prop:text="REMARKS" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="remarks_value" prop:role="qr-mobile-field-value" bind:text="self.item['remarks']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="created_field" prop:role="qr-mobile-field">
+    <anvil-component type="Label" name="created_caption" prop:text="CREATED" prop:role="qr-mobile-field-label"></anvil-component>
+    <anvil-component type="Label" name="created_value" prop:role="qr-mobile-field-value" bind:text="self.item['created_at']"></anvil-component>
+  </anvil-component>
+</anvil-form>

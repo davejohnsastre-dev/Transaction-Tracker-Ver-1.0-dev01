@@ -1,0 +1,7 @@
+<anvil-form container="FlowPanel" prop:role="device-setting-row">
+  <anvil-component type="ColumnPanel" name="device_setting_text" prop:role="device-setting-text">
+    <anvil-component type="Label" name="device_name_label" prop:role="row-primary" bind:text="self.item['device_name']"></anvil-component>
+    <anvil-component type="Label" name="device_detail_label" prop:role="muted-text" bind:text="self.item['detail']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="Button" name="revoke_button" prop:text="Revoke" prop:role="link-button" bind:visible="self.item['enabled']"></anvil-component>
+</anvil-form>

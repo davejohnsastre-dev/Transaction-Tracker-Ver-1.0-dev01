@@ -1,0 +1,12 @@
+<anvil-form container="DataRowPanel" prop:role="record-row" prop:auto_display_data="false">
+  <anvil-component type="Label" name="details_label" prop:role="record-details" bind:text="self.item['details']" container:column="details"></anvil-component>
+  <anvil-component type="FlowPanel" name="status_summary" prop:role="record-status" container:column="details">
+    <anvil-component type="Label" name="status_caption" prop:text="STATUS" prop:role="status-caption"></anvil-component>
+    <anvil-component type="Label" name="status_label" prop:role="status-badge" bind:text="self.item['status']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="ColumnPanel" name="row_actions" prop:role="record-row-actions" prop:visible="true" container:column="actions">
+    <anvil-component type="Button" name="update_button" prop:text="Update" prop:role="secondary-button"></anvil-component>
+    <anvil-component type="Button" name="print_button" prop:text="Print" prop:role="secondary-button"></anvil-component>
+    <anvil-component type="Button" name="logs_button" prop:text="View audit trail" prop:role="link-button"></anvil-component>
+  </anvil-component>
+</anvil-form>

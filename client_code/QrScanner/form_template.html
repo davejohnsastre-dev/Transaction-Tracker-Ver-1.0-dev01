@@ -1,0 +1,20 @@
+<anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
+  <anvil-block slot="content">
+    <anvil-component type="ColumnPanel" name="scanner_page" prop:role="qr-scanner-page">
+      <anvil-component type="ColumnPanel" name="scanner_card" prop:role="qr-scanner-card">
+        <anvil-component type="Label" name="scanner_heading" prop:text="Scan transaction QR code" prop:role="section-title"></anvil-component>
+        <anvil-component type="Label" name="scanner_subtitle" prop:text="Allow camera access to verify a transaction slip." prop:role="muted-text"></anvil-component>
+        <video anvil:dom-node="camera_preview" class="qr-scanner-preview"></video>
+        <anvil-component type="Label" name="scanner_message" prop:role="muted-text" prop:visible="false"></anvil-component>
+        <anvil-component type="Button" name="retry_camera_button" prop:text="Retry camera" prop:role="secondary-button"></anvil-component>
+        <anvil-component type="Label" name="manual_heading" prop:text="Or enter a slip ID manually" prop:role="field-label"></anvil-component>
+        <anvil-component type="TextBox" name="slip_id_box" prop:placeholder="SLIP-..." ></anvil-component>
+        <anvil-component type="Button" name="manual_verify_button" prop:text="Verify slip" prop:role="primary-button"></anvil-component>
+        <anvil-component type="Button" name="close_scanner_button" prop:text="Back to login" prop:role="secondary-button"></anvil-component>
+      </anvil-component>
+    </anvil-component>
+  </anvil-block>
+  <anvil-block slot="title">
+    <anvil-component type="Label" name="page_title" prop:text="QR scanner" prop:role="h1"></anvil-component>
+  </anvil-block>
+</anvil-form>

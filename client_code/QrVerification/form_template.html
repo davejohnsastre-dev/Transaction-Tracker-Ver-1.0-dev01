@@ -1,0 +1,22 @@
+<anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
+  <anvil-block slot="content">
+      <anvil-component type="ColumnPanel" name="verification_page" prop:role="qr-verification-page">
+        <anvil-component type="ColumnPanel" name="verification_card" prop:role="qr-verification-card">
+          <anvil-component type="Label" name="verification_heading" prop:text="Transaction slip verification" prop:role="section-title"></anvil-component>
+          <anvil-component type="Label" name="verification_subtitle" prop:text="Read-only transaction information linked to this QR code." prop:role="muted-text"></anvil-component>
+        <anvil-component type="FlowPanel" name="slip_summary" prop:role="qr-slip-summary">
+          <anvil-component type="Label" name="slip_id_label" prop:role="qr-slip-field"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="verification_message" prop:role="error-text" prop:visible="false"></anvil-component>
+        <div class="records-table-viewport">
+          <anvil-component type="DataGrid" name="records_grid" prop:role="records-table" prop:visible="false">
+            <anvil-component type="RepeatingPanel" name="records_panel" prop:item_template="Transaction_Tracker_System.QrTransactionRow"></anvil-component>
+          </anvil-component>
+        </div>
+      </anvil-component>
+    </anvil-component>
+  </anvil-block>
+  <anvil-block slot="title">
+    <anvil-component type="Label" name="page_title" prop:text="Transaction verification" prop:role="h1"></anvil-component>
+  </anvil-block>
+</anvil-form>

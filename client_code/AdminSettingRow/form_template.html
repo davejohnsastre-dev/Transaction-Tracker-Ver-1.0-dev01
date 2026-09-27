@@ -1,0 +1,7 @@
+<anvil-form container="FlowPanel" prop:role="admin-setting-row">
+  <anvil-component type="ColumnPanel" name="setting_text" prop:role="admin-setting-text">
+    <anvil-component type="Label" name="label" prop:role="row-primary" bind:text="self.item['label']"></anvil-component>
+    <anvil-component type="Label" name="detail" prop:role="muted-text" bind:text="self.item['detail']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="Button" name="modify_button" prop:text="Modify" prop:role="link-button"></anvil-component>
+</anvil-form>

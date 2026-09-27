@@ -1,0 +1,43 @@
+<anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
+  <anvil-block slot="content">
+    <anvil-component type="ColumnPanel" name="verification_page" prop:role="qr-mobile-page">
+      <anvil-component type="FlowPanel" name="mobile_scan_actions" prop:role="qr-mobile-scan-actions">
+        <anvil-component type="Button" name="scan_another_qr_button" prop:text="Scan another QR code" prop:role="primary-button"></anvil-component>
+        <anvil-component type="Button" name="secure_login_button" prop:text="Secure staff login" prop:role="secondary-button" prop:visible="false"></anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="secure_login_modal" prop:role="transaction-modal" prop:visible="false">
+        <anvil-component type="FlowPanel" name="secure_login_modal_header" prop:role="modal-header">
+          <anvil-component type="Label" name="secure_login_modal_heading" prop:text="Secure staff login" prop:role="section-title"></anvil-component>
+          <anvil-component type="Button" name="secure_login_cancel_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="secure_login_hint" prop:text="This login is restricted to registered devices." prop:role="muted-text"></anvil-component>
+        <anvil-component type="Label" name="secure_login_username_label" prop:text="User name" prop:role="field-label"></anvil-component>
+        <anvil-component type="TextBox" name="secure_login_username_box" prop:placeholder="Enter user name"></anvil-component>
+        <anvil-component type="Label" name="secure_login_password_label" prop:text="Password" prop:role="field-label"></anvil-component>
+        <anvil-component type="TextBox" name="secure_login_password_box" prop:placeholder="Enter password" prop:hide_text="true"></anvil-component>
+        <anvil-component type="Label" name="secure_login_message" prop:role="error-text" prop:visible="false"></anvil-component>
+        <anvil-component type="FlowPanel" name="secure_login_modal_actions" prop:role="form-actions">
+          <anvil-component type="Button" name="secure_login_submit_button" prop:text="Secure login" prop:role="primary-button"></anvil-component>
+        </anvil-component>
+      </anvil-component>
+      <anvil-component type="ColumnPanel" name="verification_card" prop:role="qr-mobile-card">
+        <anvil-component type="Label" name="verification_heading" prop:text="Transaction slip verification" prop:role="section-title"></anvil-component>
+        <anvil-component type="Label" name="verification_subtitle" prop:text="Read-only transaction information linked to this QR code." prop:role="muted-text"></anvil-component>
+        <anvil-component type="FlowPanel" name="install_prompt" prop:role="install-prompt" prop:visible="false">
+          <anvil-component type="Label" name="install_message" prop:role="muted-text"></anvil-component>
+          <anvil-component type="Button" name="install_app_button" prop:text="Install app" prop:role="secondary-button"></anvil-component>
+        </anvil-component>
+        <anvil-component type="ColumnPanel" name="slip_summary" prop:role="qr-mobile-slip-summary">
+          <anvil-component type="Label" name="slip_id_label" prop:role="qr-mobile-slip-id"></anvil-component>
+          <anvil-component type="Label" name="requestor_label" prop:role="qr-mobile-slip-field"></anvil-component>
+          <anvil-component type="Label" name="requestor_info_label" prop:role="qr-mobile-slip-field"></anvil-component>
+        </anvil-component>
+        <anvil-component type="Label" name="verification_message" prop:role="error-text" prop:visible="false"></anvil-component>
+        <anvil-component type="RepeatingPanel" name="records_panel" prop:item_template="Transaction_Tracker_System.QrMobileTransactionRow" prop:role="qr-mobile-records" prop:visible="false"></anvil-component>
+      </anvil-component>
+    </anvil-component>
+  </anvil-block>
+  <anvil-block slot="title">
+    <anvil-component type="Label" name="page_title" prop:text="Transaction verification" prop:role="h1"></anvil-component>
+  </anvil-block>
+</anvil-form>
