@@ -1,0 +1,7 @@
+<anvil-form container="FlowPanel" prop:role="audit-row">
+  <anvil-component type="Label" name="timestamp_label" prop:role="muted-text" bind:text="self.item['timestamp']"></anvil-component>
+  <anvil-component type="Label" name="action_label" prop:role="row-primary" bind:text="self.item['action']"></anvil-component>
+  <anvil-component type="Label" name="detail_label" bind:text="self.item['asset_tag']"></anvil-component>
+  <anvil-component type="Label" name="operator_label" prop:role="muted-text" bind:text="self.item['operator']"></anvil-component>
+  <anvil-component type="Label" name="notes_label" bind:text="self.item['details']"></anvil-component>
+</anvil-form>

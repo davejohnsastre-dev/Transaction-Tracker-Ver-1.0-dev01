@@ -1,0 +1,15 @@
+<anvil-form container="FlowPanel" prop:role="inventory-row">
+  <anvil-component type="ColumnPanel" name="inventory_details" prop:role="inventory-details">
+    <anvil-component type="Label" name="asset_tag_label" prop:role="row-primary" bind:text="self.item['asset_tag']"></anvil-component>
+    <anvil-component type="Label" name="description_label" prop:role="muted-text" bind:text="self.item['category']"></anvil-component>
+    <anvil-component type="Label" name="assignment_label" bind:text="self.item['assignee']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="ColumnPanel" name="inventory_state" prop:role="inventory-state">
+    <anvil-component type="Label" name="status_label" prop:role="status-badge" bind:text="self.item['status']"></anvil-component>
+    <anvil-component type="Label" name="location_label" prop:role="muted-text" bind:text="self.item['location']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="inventory_actions" prop:role="record-row-actions">
+    <anvil-component type="Button" name="transfer_button" prop:text="Transfer" prop:role="secondary-button"></anvil-component>
+    <anvil-component type="Button" name="status_button" prop:text="Change status" prop:role="link-button"></anvil-component>
+  </anvil-component>
+</anvil-form>

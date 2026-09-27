@@ -161,7 +161,7 @@ def _set_password_hash(user, password):
 def _migrate_legacy_passwords():
     """Hash and clear any remaining legacy plaintext password values."""
     migrated = 0
-    for user in app_tables.users.search():
+    for user in app_tables.Core_Users.search():
         legacy_password = _text(user["password"])
         if not legacy_password:
             continue
@@ -202,7 +202,7 @@ def _user_role(user):
 def _create_session(user):
     raw_token = secrets.token_urlsafe(32)
     now = datetime.now(anvil.tz.UTC)
-    app_tables.auth_sessions.add_row(
+    app_tables.Core_Auth_Sessions.add_row(
         token_hash=_hash_device_token(raw_token),
         username=_text(user.get("username")),
         created_at=now,
@@ -217,7 +217,7 @@ def _find_session(token):
         return None
     token_hash = _hash_device_token(token)
     now = datetime.now(anvil.tz.UTC)
-    for session in app_tables.auth_sessions.search():
+    for session in app_tables.Core_Auth_Sessions.search():
         if not hmac.compare_digest(_text(session["token_hash"]), token_hash):
             continue
         if session["revoked_at"] or not session["expires_at"] or session["expires_at"] <= now:
@@ -239,7 +239,7 @@ def _revoke_session(token):
     if not token:
         return None
     token_hash = _hash_device_token(token)
-    for session in app_tables.auth_sessions.search():
+    for session in app_tables.Core_Auth_Sessions.search():
         if hmac.compare_digest(_text(session["token_hash"]), token_hash):
             if not session["revoked_at"]:
                 session["revoked_at"] = datetime.now(anvil.tz.UTC)
@@ -251,7 +251,7 @@ def _revoke_user_sessions(username, except_token=None):
     target_username = _text(username).lower()
     except_hash = _hash_device_token(except_token) if _text(except_token) else ""
     now = datetime.now(anvil.tz.UTC)
-    for session in app_tables.auth_sessions.search():
+    for session in app_tables.Core_Auth_Sessions.search():
         if _text(session["username"]).lower() != target_username:
             continue
         if except_hash and hmac.compare_digest(_text(session["token_hash"]), except_hash):
@@ -279,7 +279,7 @@ def _qr_code_media(slip_id, app_origin):
 
 def _find_user(username):
     target = _text(username).lower()
-    for row in app_tables.users.search():
+    for row in app_tables.Core_Users.search():
         if _text(row["username"]).lower() == target and row["enabled"]:
             return row
     return None
@@ -417,7 +417,7 @@ def _find_registered_device(token):
     if not token:
         return None
     token_hash = _hash_device_token(token)
-    for row in app_tables.registered_devices.search():
+    for row in app_tables.Core_Registered_Devices.search():
         if not row["enabled"]:
             continue
         if hmac.compare_digest(_text(row["token_hash"]), token_hash):
@@ -426,7 +426,7 @@ def _find_registered_device(token):
 
 
 def _verification_settings_row():
-    for row in app_tables.verification_settings.search():
+    for row in app_tables.Core_Verification_Settings.search():
         return row
     return None
 
@@ -446,7 +446,7 @@ def get_admin_settings(session_token):
     del user
 
     users = []
-    for row in app_tables.users.search():
+    for row in app_tables.Core_Users.search():
         users.append({
             "id": row.get_id(),
             "setting_type": "users",
@@ -462,7 +462,7 @@ def get_admin_settings(session_token):
         })
 
     statuses = []
-    for row in app_tables.statuses.search():
+    for row in app_tables.Tracker_Statuses.search():
         name = _upper(row["name"])
         if name:
             statuses.append({
@@ -474,7 +474,7 @@ def get_admin_settings(session_token):
             })
 
     transaction_types = []
-    for row in app_tables.transaction_types.search():
+    for row in app_tables.Tracker_Transaction_Types.search():
         name = _upper(row["transaction_name"])
         if name:
             transaction_types.append({
@@ -490,7 +490,7 @@ def get_admin_settings(session_token):
     statuses.sort(key=lambda item: item["label"])
     transaction_types.sort(key=lambda item: item["label"])
     devices = []
-    for row in app_tables.registered_devices.search():
+    for row in app_tables.Core_Registered_Devices.search():
         device_name = _text(row["device_name"]) or "Unnamed device"
         enabled = bool(row["enabled"])
         devices.append({
@@ -532,7 +532,7 @@ def admin_register_device(device_name, session_token):
         return {"success": False, "message": "The device name must be 120 characters or fewer."}
 
     raw_token = secrets.token_urlsafe(32)
-    app_tables.registered_devices.add_row(
+    app_tables.Core_Registered_Devices.add_row(
         device_name=device_name,
         token_hash=_hash_device_token(raw_token),
         enabled=True,
@@ -553,7 +553,7 @@ def admin_revoke_device(device_id, session_token):
         return error
     assert user is not None
 
-    row = app_tables.registered_devices.get_by_id(_text(device_id))
+    row = app_tables.Core_Registered_Devices.get_by_id(_text(device_id))
     if row is None:
         return {"success": False, "message": "The selected device was not found."}
     row["enabled"] = False
@@ -571,7 +571,7 @@ def admin_set_device_token_requirement(required, session_token):
     required = bool(required)
     row = _verification_settings_row()
     if row is None:
-        app_tables.verification_settings.add_row(
+        app_tables.Core_Verification_Settings.add_row(
             device_token_required=required,
             updated_at=datetime.now(anvil.tz.UTC),
         )
@@ -607,10 +607,10 @@ def admin_register_user(username, employee_name, password, session_token, enable
         return {"success": False, "message": "Employee name must be 160 characters or fewer."}
     if username == GUEST_USERNAME:
         return {"success": False, "message": "The guest username is reserved."}
-    if any(_text(row["username"]).lower() == username for row in app_tables.users.search()):
+    if any(_text(row["username"]).lower() == username for row in app_tables.Core_Users.search()):
         return {"success": False, "message": "That username is already registered."}
 
-    app_tables.users.add_row(
+    app_tables.Core_Users.add_row(
         username=username,
         employee_name=employee_name,
         password="",
@@ -629,7 +629,7 @@ def admin_update_user(user_id, employee_name, password, session_token, enabled=T
         return error
     assert user is not None
 
-    row = app_tables.users.get_by_id(_text(user_id))
+    row = app_tables.Core_Users.get_by_id(_text(user_id))
     if row is None:
         return {"success": False, "message": "The selected user was not found."}
     employee_name = _upper(employee_name)
@@ -667,10 +667,10 @@ def admin_add_status(name, session_token):
         return {"success": False, "message": "A status name is required."}
     if len(name) > 80:
         return {"success": False, "message": "Status name must be 80 characters or fewer."}
-    if any(_upper(row["name"]) == name for row in app_tables.statuses.search()):
+    if any(_upper(row["name"]) == name for row in app_tables.Tracker_Statuses.search()):
         return {"success": False, "message": "That status already exists."}
 
-    app_tables.statuses.add_row(name=name)
+    app_tables.Tracker_Statuses.add_row(name=name)
     _write_security_audit(user["username"], "Added status '%s'." % name)
     return {"success": True, "message": "Status added successfully."}
 
@@ -682,7 +682,7 @@ def admin_update_status(status_id, name, session_token):
         return error
     assert user is not None
 
-    row = app_tables.statuses.get_by_id(_text(status_id))
+    row = app_tables.Tracker_Statuses.get_by_id(_text(status_id))
     if row is None:
         return {"success": False, "message": "The selected status was not found."}
     name = _upper(name)
@@ -692,7 +692,7 @@ def admin_update_status(status_id, name, session_token):
         return {"success": False, "message": "Status name must be 80 characters or fewer."}
     if any(
         candidate.get_id() != row.get_id() and _upper(candidate["name"]) == name
-        for candidate in app_tables.statuses.search()
+        for candidate in app_tables.Tracker_Statuses.search()
     ):
         return {"success": False, "message": "That status already exists."}
     row["name"] = name
@@ -713,12 +713,12 @@ def admin_add_transaction_type(name, code, session_token):
         return {"success": False, "message": "A transaction type name is required."}
     if len(name) > 80 or len(code) > 40:
         return {"success": False, "message": "Transaction type names must be 80 characters or fewer and codes 40 characters or fewer."}
-    if any(_upper(row["transaction_name"]) == name for row in app_tables.transaction_types.search()):
+    if any(_upper(row["transaction_name"]) == name for row in app_tables.Tracker_Transaction_Types.search()):
         return {"success": False, "message": "That transaction type already exists."}
-    if code and any(_upper(row["transaction_code"]) == code for row in app_tables.transaction_types.search()):
+    if code and any(_upper(row["transaction_code"]) == code for row in app_tables.Tracker_Transaction_Types.search()):
         return {"success": False, "message": "That transaction type code already exists."}
 
-    app_tables.transaction_types.add_row(transaction_name=name, transaction_code=code)
+    app_tables.Tracker_Transaction_Types.add_row(transaction_name=name, transaction_code=code)
     _write_security_audit(user["username"], "Added transaction type '%s'." % name)
     return {"success": True, "message": "Transaction type added successfully."}
 
@@ -730,7 +730,7 @@ def admin_update_transaction_type(type_id, name, code, session_token):
         return error
     assert user is not None
 
-    row = app_tables.transaction_types.get_by_id(_text(type_id))
+    row = app_tables.Tracker_Transaction_Types.get_by_id(_text(type_id))
     if row is None:
         return {"success": False, "message": "The selected transaction type was not found."}
     name = _upper(name)
@@ -742,13 +742,13 @@ def admin_update_transaction_type(type_id, name, code, session_token):
     if any(
         candidate.get_id() != row.get_id()
         and _upper(candidate["transaction_name"]) == name
-        for candidate in app_tables.transaction_types.search()
+        for candidate in app_tables.Tracker_Transaction_Types.search()
     ):
         return {"success": False, "message": "That transaction type already exists."}
     if code and any(
         candidate.get_id() != row.get_id()
         and _upper(candidate["transaction_code"]) == code
-        for candidate in app_tables.transaction_types.search()
+        for candidate in app_tables.Tracker_Transaction_Types.search()
     ):
         return {"success": False, "message": "That transaction type code already exists."}
     row.update(transaction_name=name, transaction_code=code)
@@ -762,7 +762,7 @@ def get_transaction_types(session_token):
     if error:
         return error
     del user
-    values = [_upper(row["transaction_name"]) for row in app_tables.transaction_types.search()]
+    values = [_upper(row["transaction_name"]) for row in app_tables.Tracker_Transaction_Types.search()]
     return {"success": True, "values": [value for value in values if value]}
 
 
@@ -772,7 +772,7 @@ def get_status_types(session_token):
     if error:
         return error
     del user
-    values = [_upper(row["name"]) for row in app_tables.statuses.search()]
+    values = [_upper(row["name"]) for row in app_tables.Tracker_Statuses.search()]
     return {"success": True, "values": [value for value in values if value]}
 
 
@@ -814,7 +814,7 @@ def _link_legacy_transaction(row):
     legacy_slip_id = _upper(row["slip_id"])
     slip = None
     if legacy_slip_id:
-        for candidate in app_tables.transaction_slips.search(slip_id=legacy_slip_id):
+        for candidate in app_tables.Tracker_Transaction_Slips.search(slip_id=legacy_slip_id):
             if (
                 _upper(candidate["requestor"]) == _upper(row["requestor"])
                 and _upper(candidate["requestor_info"]) == _upper(row["requestor_info"])
@@ -822,7 +822,7 @@ def _link_legacy_transaction(row):
                 slip = candidate
                 break
     if slip is None:
-        slip = app_tables.transaction_slips.add_row(
+        slip = app_tables.Tracker_Transaction_Slips.add_row(
             slip_id=legacy_slip_id,
             requestor=_upper(row["requestor"]),
             requestor_info=_upper(row["requestor_info"]),
@@ -838,7 +838,7 @@ def get_spreadsheet_data(session_token):
         return error
     del user
     rows = []
-    for row in app_tables.transactions.search():
+    for row in app_tables.Tracker_Transactions.search():
         if not (_text(row["tdn"]) or _text(row["pin"]) or _text(row["owner"])):
             continue
         _link_legacy_transaction(row)
@@ -853,7 +853,7 @@ def _transaction_slip_records_payload(slip_id):
         return {"success": False, "message": "This transaction has no slip ID to print."}
 
     slip = None
-    for candidate in app_tables.transaction_slips.search():
+    for candidate in app_tables.Tracker_Transaction_Slips.search():
         if _upper(candidate["slip_id"]) == target_slip_id:
             slip = candidate
             break
@@ -862,7 +862,7 @@ def _transaction_slip_records_payload(slip_id):
 
     slip_id_value = _upper(slip["slip_id"])
     child_rows = []
-    for row in app_tables.transactions.search():
+    for row in app_tables.Tracker_Transactions.search():
         linked_slip = row["transaction_slip"]
         linked_to_slip = linked_slip is not None and linked_slip.get_id() == slip.get_id()
         legacy_linked_to_slip = linked_slip is None and _upper(row["slip_id"]) == slip_id_value
@@ -923,7 +923,7 @@ def get_transaction_slip_records_for_qr(slip_id, device_token=""):
 
 
 def _write_audit_log(tdn, operator, details):
-    app_tables.audit_logs.add_row(
+    app_tables.Tracker_Audit_Logs.add_row(
         timestamp=datetime.now(anvil.tz.UTC),
         tdn=_upper(tdn),
         operator=_upper(operator),
@@ -942,7 +942,7 @@ def _reference_value_exists(table, column, value):
 
 def _find_transaction_by_tdn(tdn):
     target = _upper(tdn)
-    for row in app_tables.transactions.search():
+    for row in app_tables.Tracker_Transactions.search():
         if _upper(row["tdn"]) == target:
             return row
     return None
@@ -952,14 +952,14 @@ def _add_provided_audit_log(tdn, activity):
     activity = _upper(activity)
     if not activity:
         return False
-    for row in app_tables.audit_logs.search():
+    for row in app_tables.Tracker_Audit_Logs.search():
         if _upper(row["tdn"]) == _upper(tdn) and _upper(row["details"]) == activity:
             return False
     match = re.match(r"^\[([^\]]+)\].*?\bBY\s+(.+)$", activity, re.I)
     if not match:
         return False
     timestamp = datetime.strptime(match.group(1).title(), "%b %d, %Y %H:%M")
-    app_tables.audit_logs.add_row(
+    app_tables.Tracker_Audit_Logs.add_row(
         timestamp=timestamp,
         tdn=_upper(tdn),
         operator=_upper(match.group(2)),
@@ -988,12 +988,12 @@ def import_provided_transactions(session_token):
                 existing["latest_activity"] = _upper(item["activity"])
         else:
             created_at = datetime.strptime(item["date"], "%Y/%m/%d")
-            slip = app_tables.transaction_slips.add_row(
+            slip = app_tables.Tracker_Transaction_Slips.add_row(
                 slip_id=_new_slip_id(created_at),
                 requestor=_upper(item["requestor"]),
                 requestor_info=_upper(item.get("contact_info")),
             )
-            app_tables.transactions.add_row(
+            app_tables.Tracker_Transactions.add_row(
                 created_at=created_at,
                 tdn=_upper(item["tdn"]),
                 pin=_upper(item["pin"]),
@@ -1031,7 +1031,7 @@ def backfill_transaction_slip_ids(session_token, app_origin=None):
 
     assigned = 0
     generated_qr_codes = 0
-    for row in app_tables.transactions.search():
+    for row in app_tables.Tracker_Transactions.search():
         slip = row["transaction_slip"]
         if slip is None:
             slip = _link_legacy_transaction(row)
@@ -1042,7 +1042,7 @@ def backfill_transaction_slip_ids(session_token, app_origin=None):
             slip["qr_code"] = _qr_code_media(slip["slip_id"], app_origin)
             generated_qr_codes += 1
 
-    for slip in app_tables.transaction_slips.search():
+    for slip in app_tables.Tracker_Transaction_Slips.search():
         if not _text(slip["slip_id"]):
             slip["slip_id"] = _new_slip_id()
             assigned += 1
@@ -1066,7 +1066,7 @@ def get_record_logs(tdn, session_token):
     del user
     target = _upper(tdn)
     logs = []
-    for row in app_tables.audit_logs.search():
+    for row in app_tables.Tracker_Audit_Logs.search():
         if _upper(row["tdn"]) == target:
             logs.append(
                 (row["timestamp"], {
@@ -1200,9 +1200,9 @@ def _insert_transaction_batch(requestor, requestor_info, transaction_items, user
         )
         if any(not value for value in required_fields):
             return {"success": False, "message": "Every transaction item needs its required fields completed."}
-        if not _reference_value_exists(app_tables.transaction_types, "transaction_name", normalized_item["transaction_type"]):
+        if not _reference_value_exists(app_tables.Tracker_Transaction_Types, "transaction_name", normalized_item["transaction_type"]):
             return {"success": False, "message": "Select a valid transaction type."}
-        if not _reference_value_exists(app_tables.statuses, "name", normalized_item["status"]):
+        if not _reference_value_exists(app_tables.Tracker_Statuses, "name", normalized_item["status"]):
             return {"success": False, "message": "Select a valid transaction status."}
         if _find_transaction_by_tdn(normalized_item["tdn"]):
             return {
@@ -1218,7 +1218,7 @@ def _insert_transaction_batch(requestor, requestor_info, transaction_items, user
 
     now = datetime.now(anvil.tz.UTC)
     slip_id = _new_slip_id(now)
-    slip = app_tables.transaction_slips.add_row(
+    slip = app_tables.Tracker_Transaction_Slips.add_row(
         slip_id=slip_id,
         requestor=_upper(requestor),
         requestor_info=_upper(requestor_info),
@@ -1228,7 +1228,7 @@ def _insert_transaction_batch(requestor, requestor_info, transaction_items, user
     records = []
     for item in normalized_items:
         target_tdn = item["tdn"]
-        record = app_tables.transactions.add_row(
+        record = app_tables.Tracker_Transactions.add_row(
             created_at=now,
             tdn=target_tdn,
             pin=item["pin"],
@@ -1294,7 +1294,7 @@ def update_record_status(record_id, new_status, new_remarks, session_token):
     if _is_read_only_user(user):
         return {"success": False, "message": "Read-only accounts cannot update transactions."}
     row = None
-    for candidate in app_tables.transactions.search():
+    for candidate in app_tables.Tracker_Transactions.search():
         if candidate.get_id() == record_id:
             row = candidate
             break
@@ -1304,7 +1304,7 @@ def update_record_status(record_id, new_status, new_remarks, session_token):
     status = _upper(new_status)
     if not status:
         return {"success": False, "message": "A status is required."}
-    if len(status) > 80 or not _reference_value_exists(app_tables.statuses, "name", status):
+    if len(status) > 80 or not _reference_value_exists(app_tables.Tracker_Statuses, "name", status):
         return {"success": False, "message": "Select a valid transaction status."}
     remarks = _upper(new_remarks)
     if len(remarks) > 1000:

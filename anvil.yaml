@@ -1,24 +1,7 @@
 allow_embedding: false
 correct_dependency_ids: {}
 db_schema:
-  audit_logs:
-    client: none
-    columns:
-    - admin_ui: {order: 0}
-      name: timestamp
-      type: datetime
-    - admin_ui: {order: 1}
-      name: tdn
-      type: string
-    - admin_ui: {order: 2}
-      name: operator
-      type: string
-    - admin_ui: {order: 3}
-      name: details
-      type: string
-    server: full
-    title: Audit Logs
-  auth_sessions:
+  Core_Auth_Sessions:
     client: none
     columns:
     - admin_ui: {client_hidden: true, order: 0}
@@ -38,7 +21,7 @@ db_schema:
       type: datetime
     server: full
     title: Authentication Sessions
-  registered_devices:
+  Core_Registered_Devices:
     client: none
     columns:
     - admin_ui: {order: 0}
@@ -58,7 +41,184 @@ db_schema:
       type: datetime
     server: full
     title: Registered Devices
-  statuses:
+  Core_Users:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: username
+      type: string
+    - admin_ui: {order: 1}
+      name: employee_name
+      type: string
+    - admin_ui: {order: 2}
+      client_hidden: true
+      name: password
+      type: string
+    - admin_ui: {client_hidden: true, order: 3}
+      name: password_hash
+      type: string
+    - admin_ui: {order: 4}
+      name: enabled
+      type: bool
+    - admin_ui: {order: 5}
+      name: role
+      type: string
+    server: full
+    title: Users
+  Core_Verification_Settings:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: device_token_required
+      type: bool
+    - admin_ui: {order: 1}
+      name: updated_at
+      type: datetime
+    server: full
+    title: Verification Settings
+  Inventory_Audit_Logs:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: timestamp
+      type: datetime
+    - admin_ui: {order: 1}
+      name: equipment
+      target: Inventory_Equipment
+      type: link_single
+    - admin_ui: {order: 2}
+      name: action
+      type: string
+    - admin_ui: {order: 3}
+      name: operator
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 4}
+      name: from_user
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 5}
+      name: to_user
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 6}
+      name: old_status
+      target: Inventory_Equipment_Statuses
+      type: link_single
+    - admin_ui: {order: 7}
+      name: new_status
+      target: Inventory_Equipment_Statuses
+      type: link_single
+    - admin_ui: {order: 8}
+      name: details
+      type: string
+    server: full
+    title: Inventory Audit Logs
+  Inventory_Equipment:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: asset_tag
+      type: string
+    - admin_ui: {order: 1}
+      name: category
+      type: string
+    - admin_ui: {order: 2}
+      name: manufacturer
+      type: string
+    - admin_ui: {order: 3}
+      name: model
+      type: string
+    - admin_ui: {order: 4}
+      name: serial_number
+      type: string
+    - admin_ui: {order: 5}
+      name: purchase_date
+      type: date
+    - admin_ui: {order: 6}
+      name: location
+      type: string
+    - admin_ui: {order: 7}
+      name: status
+      target: Inventory_Equipment_Statuses
+      type: link_single
+    - admin_ui: {order: 8}
+      name: current_assignee
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 9}
+      name: notes
+      type: string
+    - admin_ui: {order: 10}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 11}
+      name: updated_at
+      type: datetime
+    server: full
+    title: Equipment
+  Inventory_Equipment_Assignments:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: equipment
+      target: Inventory_Equipment
+      type: link_single
+    - admin_ui: {order: 1}
+      name: from_user
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 2}
+      name: to_user
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 3}
+      name: assigned_at
+      type: datetime
+    - admin_ui: {order: 4}
+      name: returned_at
+      type: datetime
+    - admin_ui: {order: 5}
+      name: assigned_by
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 6}
+      name: notes
+      type: string
+    server: full
+    title: Equipment Assignments
+  Inventory_Equipment_Statuses:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: name
+      type: string
+    - admin_ui: {order: 1}
+      name: description
+      type: string
+    - admin_ui: {order: 2}
+      name: active
+      type: bool
+    server: full
+    title: Equipment Statuses
+  Tracker_Audit_Logs:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: timestamp
+      type: datetime
+    - admin_ui: {order: 1}
+      name: tdn
+      type: string
+    - admin_ui: {order: 2}
+      name: operator
+      type: string
+    - admin_ui: {order: 3}
+      name: details
+      type: string
+    server: full
+    title: Audit Logs
+  Tracker_Statuses:
     client: none
     columns:
     - admin_ui: {order: 0}
@@ -66,7 +226,7 @@ db_schema:
       type: string
     server: full
     title: Statuses
-  transaction_slips:
+  Tracker_Transaction_Slips:
     client: none
     columns:
     - admin_ui: {order: 0}
@@ -85,7 +245,7 @@ db_schema:
     indexes: []
     server: full
     title: Transaction Slips
-  transaction_types:
+  Tracker_Transaction_Types:
     client: none
     columns:
     - admin_ui: {order: 0}
@@ -99,7 +259,7 @@ db_schema:
     indexes: []
     server: full
     title: Transaction Types
-  transactions:
+  Tracker_Transactions:
     client: none
     columns:
     - admin_ui: {order: 0}
@@ -152,49 +312,14 @@ db_schema:
       type: string
     - admin_ui: {order: 15}
       name: transaction_slip
-      target: transaction_slips
+      target: Tracker_Transaction_Slips
       type: link_single
     indexes: []
     server: full
     title: Transactions
-  users:
-    client: none
-    columns:
-    - admin_ui: {order: 0}
-      name: username
-      type: string
-    - admin_ui: {order: 1}
-      name: employee_name
-      type: string
-    - admin_ui: {order: 2}
-      client_hidden: true
-      name: password
-      type: string
-    - admin_ui: {client_hidden: true, order: 3}
-      name: password_hash
-      type: string
-    - admin_ui: {order: 4}
-      name: enabled
-      type: bool
-    - admin_ui: {order: 5}
-      name: role
-      type: string
-    server: full
-    title: Users
-  verification_settings:
-    client: none
-    columns:
-    - admin_ui: {order: 0}
-      name: device_token_required
-      type: bool
-    - admin_ui: {order: 1}
-      name: updated_at
-      type: datetime
-    server: full
-    title: Verification Settings
 dependencies: []
 metadata: {logo_img: 'asset:MASSO LOGO 20P.png', title: Transaction Tracker}
-name: Clone of Transaction Tracker Ver. 1.0X
+name: Transaction Tracker Ver. 1.0 dev01
 package_name: Transaction_Tracker_System
 runtime_options:
   client_version: '3'

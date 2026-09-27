@@ -144,6 +144,34 @@ a:focus {
   background: var(--blank-surface);
 }
 
+.anvil-role-inventory-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--blank-border);
+}
+
+.anvil-role-inventory-details {
+  flex: 1 1 36%;
+}
+
+.anvil-role-inventory-state {
+  flex: 1 1 24%;
+}
+
+.anvil-role-inventory-row .anvil-role-record-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.anvil-role-inventory-list,
+.anvil-role-audit-list {
+  margin-bottom: 32px;
+}
+
 input.anvil-text-box,
 textarea.anvil-text-area,
 .anvil-dropdown select,
