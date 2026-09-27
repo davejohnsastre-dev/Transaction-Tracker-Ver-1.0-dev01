@@ -1,0 +1,8 @@
+<anvil-form container="FlowPanel" prop:role="audit-row">
+  <anvil-component type="Label" name="kind_label" prop:role="row-primary" bind:text="self.item['kind']"></anvil-component>
+  <anvil-component type="Label" name="item_label" bind:text="self.item['item']"></anvil-component>
+  <anvil-component type="Label" name="quantity_label" bind:text="self.item['quantity']"></anvil-component>
+  <anvil-component type="Label" name="timestamp_label" prop:role="muted-text" bind:text="self.item['timestamp']"></anvil-component>
+  <anvil-component type="Label" name="user_label" prop:role="muted-text" bind:text="self.item['user']"></anvil-component>
+  <anvil-component type="Label" name="notes_label" bind:text="self.item['notes']"></anvil-component>
+</anvil-form>

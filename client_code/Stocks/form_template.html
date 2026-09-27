@@ -1,0 +1,33 @@
+<anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
+  <anvil-block slot="actions">
+    <anvil-component type="Button" name="back_button" prop:text="Back to transactions" prop:role="secondary-button"></anvil-component>
+  </anvil-block>
+  <anvil-block slot="title">
+    <anvil-component type="Label" name="page_title" prop:text="Stock monitoring" prop:role="h1"></anvil-component>
+  </anvil-block>
+  <anvil-block slot="content">
+    <anvil-component type="Label" name="message_label" prop:role="settings-message" prop:visible="false"></anvil-component>
+    <anvil-component type="ColumnPanel" name="add_item_panel" prop:role="card" prop:visible="false">
+      <anvil-component type="Label" name="add_item_heading" prop:text="Add stock item" prop:role="section-title"></anvil-component>
+      <anvil-component type="TextBox" name="item_name_box" prop:placeholder="Item name *"></anvil-component>
+      <anvil-component type="TextBox" name="item_unit_box" prop:placeholder="Unit (e.g. pieces, boxes)"></anvil-component>
+      <anvil-component type="TextBox" name="starting_balance_box" prop:placeholder="Starting balance (optional)"></anvil-component>
+      <anvil-component type="Button" name="add_item_button" prop:text="Create stock item" prop:role="primary-button"></anvil-component>
+    </anvil-component>
+    <anvil-component type="ColumnPanel" name="action_panel" prop:role="card" prop:visible="false">
+      <anvil-component type="Label" name="action_heading" prop:role="section-title"></anvil-component>
+      <anvil-component type="Label" name="action_message" prop:role="error-text"></anvil-component>
+      <anvil-component type="DropDown" name="item_box" prop:include_placeholder="true" prop:placeholder="Stock item"></anvil-component>
+      <anvil-component type="TextBox" name="quantity_box" prop:placeholder="Quantity *"></anvil-component>
+      <anvil-component type="TextArea" name="notes_box" prop:placeholder="Optional notes"></anvil-component>
+      <anvil-component type="FlowPanel" name="action_buttons" prop:role="form-actions">
+        <anvil-component type="Button" name="action_cancel_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+        <anvil-component type="Button" name="action_save_button" prop:text="Save movement" prop:role="primary-button"></anvil-component>
+      </anvil-component>
+    </anvil-component>
+    <anvil-component type="Label" name="stock_heading" prop:text="Current stock balances" prop:role="section-title"></anvil-component>
+    <anvil-component type="RepeatingPanel" name="stock_panel" prop:item_template="Transaction_Tracker_System.StockRow" prop:role="inventory-list"></anvil-component>
+    <anvil-component type="Label" name="movement_heading" prop:text="Stock movement history" prop:role="section-title"></anvil-component>
+    <anvil-component type="RepeatingPanel" name="movement_panel" prop:item_template="Transaction_Tracker_System.StockMovementRow" prop:role="audit-list"></anvil-component>
+  </anvil-block>
+</anvil-form>

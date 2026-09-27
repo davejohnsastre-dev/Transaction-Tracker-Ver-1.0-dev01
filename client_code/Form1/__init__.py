@@ -152,6 +152,7 @@ class Form1(Form1Template):
     self.app_panel.visible = True
     self.change_pin_button.visible = not read_only
     self.inventory_button.visible = True
+    self.stocks_button.visible = True
     self.settings_button.visible = (
       not read_only
       and self.session.get("role") == "admin"
@@ -243,6 +244,7 @@ class Form1(Form1Template):
       self.app_panel.visible = False
       self.change_pin_button.visible = False
       self.inventory_button.visible = False
+      self.stocks_button.visible = False
       self.settings_button.visible = False
       self.logout_button.visible = False
       self.pin_box.text = ""
@@ -256,6 +258,10 @@ class Form1(Form1Template):
   @handle("inventory_button", "click")
   def inventory_button_click(self, **event_args):
     open_form("Transaction_Tracker_System.Inventory", session=self.session)
+
+  @handle("stocks_button", "click")
+  def stocks_button_click(self, **event_args):
+    open_form("Transaction_Tracker_System.Stocks", session=self.session)
 
   @handle("cancel_pin_button", "click")
   def cancel_pin_button_click(self, **event_args):
