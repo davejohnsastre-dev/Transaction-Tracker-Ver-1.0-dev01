@@ -257,6 +257,76 @@ db_schema:
     indexes: []
     server: full
     title: Inventory_Equipment_Statuses
+  Stocks_Additions:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: stock_item
+      target: Stocks_Items
+      type: link_single
+    - admin_ui: {order: 1}
+      name: quantity
+      type: number
+    - admin_ui: {order: 2}
+      name: added_at
+      type: datetime
+    - admin_ui: {order: 3}
+      name: added_by
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 4}
+      name: notes
+      type: string
+    server: full
+    title: Stocks_Additions
+  Stocks_Items:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: name
+      type: string
+    - admin_ui: {order: 1}
+      name: unit
+      type: string
+    - admin_ui: {order: 2}
+      name: starting_balance
+      type: number
+    - admin_ui: {order: 3}
+      name: current_balance
+      type: number
+    - admin_ui: {order: 4}
+      name: active
+      type: bool
+    - admin_ui: {order: 5}
+      name: created_at
+      type: datetime
+    - admin_ui: {order: 6}
+      name: updated_at
+      type: datetime
+    server: full
+    title: Stocks_Items
+  Stocks_Withdrawals:
+    client: none
+    columns:
+    - admin_ui: {order: 0}
+      name: stock_item
+      target: Stocks_Items
+      type: link_single
+    - admin_ui: {order: 1}
+      name: quantity
+      type: number
+    - admin_ui: {order: 2}
+      name: withdrawn_at
+      type: datetime
+    - admin_ui: {order: 3}
+      name: withdrawn_by
+      target: Core_Users
+      type: link_single
+    - admin_ui: {order: 4}
+      name: notes
+      type: string
+    server: full
+    title: Stocks_Withdrawals
   Tracker_Audit_Logs:
     client: none
     columns:
