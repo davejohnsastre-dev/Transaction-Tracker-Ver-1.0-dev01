@@ -28,7 +28,7 @@ def _quantity(value):
 def _display_user(row):
     if not row:
         return "Unknown user"
-    return _text(row["employee_name"]) or _text(row["username"])
+    return _upper(row["employee_name"]) or _upper(row["username"])
 
 
 def _format_quantity(value):
@@ -40,13 +40,13 @@ def _format_quantity(value):
 def _item_payload(row):
     return {
         "id": row.get_id(),
-        "name": _text(row["name"]),
-        "unit": _text(row["unit"]) or "unit",
+        "name": _upper(row["name"]),
+        "unit": _upper(row["unit"]) or "UNIT",
         "starting_balance": float(row["starting_balance"] or 0),
         "current_balance": float(row["current_balance"] or 0),
         "balance_display": "%s %s" % (
             _format_quantity(row["current_balance"]),
-            _text(row["unit"]) or "unit",
+            _upper(row["unit"]) or "UNIT",
         ),
         "active": row["active"] is not False,
     }
@@ -58,11 +58,11 @@ def _movement_payload(row, kind):
     timestamp = row["added_at"] if kind == "ADDITION" else row["withdrawn_at"]
     return {
         "kind": kind,
-        "item": _text(item["name"]) if item else "",
+        "item": _upper(item["name"]) if item else "",
         "quantity": _format_quantity(row["quantity"]),
         "timestamp": timestamp.strftime("%b %d, %Y %I:%M %p") if timestamp else "",
         "user": _display_user(user),
-        "notes": _text(row["notes"]),
+        "notes": _upper(row["notes"]),
     }
 
 
@@ -96,8 +96,8 @@ def add_stock_item(name, unit, starting_balance, session_token):
     user, error = _require_admin(session_token)
     if error:
         return error
-    name = _text(name)
-    unit = _text(unit) or "unit"
+    name = _upper(name)
+    unit = _upper(unit) or "UNIT"
     balance = _quantity(starting_balance)
     if not name:
         return {"success": False, "message": "Stock item name is required."}
@@ -139,7 +139,7 @@ def add_stock(item_name, quantity, notes, session_token):
         quantity=amount,
         added_at=now,
         added_by=user,
-        notes=_text(notes),
+        notes=_upper(notes),
     )
     return {"success": True, "message": "Stock added."}
 
@@ -167,6 +167,6 @@ def withdraw_stock(item_name, quantity, notes, session_token):
         quantity=amount,
         withdrawn_at=now,
         withdrawn_by=user,
-        notes=_text(notes),
+        notes=_upper(notes),
     )
     return {"success": True, "message": "Stock withdrawal recorded."}
