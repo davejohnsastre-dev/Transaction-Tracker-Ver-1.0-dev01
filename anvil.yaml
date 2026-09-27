@@ -4,319 +4,398 @@ db_schema:
   Core_Auth_Sessions:
     client: none
     columns:
-    - admin_ui: {client_hidden: true, order: 0}
+    - admin_ui: {client_hidden: true}
+      client_hidden: null
       name: token_hash
       type: string
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: username
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: created_at
       type: datetime
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: expires_at
       type: datetime
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: revoked_at
       type: datetime
+    indexes: []
     server: full
-    title: Authentication Sessions
+    title: Core_Auth_Sessions
   Core_Registered_Devices:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: device_name
       type: string
-    - admin_ui: {client_hidden: true, order: 1}
+    - admin_ui: {client_hidden: true}
+      client_hidden: null
       name: token_hash
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: enabled
       type: bool
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: registered_at
       type: datetime
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: last_seen_at
       type: datetime
+    indexes: []
     server: full
-    title: Registered Devices
+    title: Core_Registered_Devices
   Core_Users:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: username
       type: string
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: employee_name
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
       client_hidden: true
       name: password
       type: string
-    - admin_ui: {client_hidden: true, order: 3}
+    - admin_ui: {client_hidden: true}
+      client_hidden: null
       name: password_hash
       type: string
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: enabled
       type: bool
-    - admin_ui: {order: 5}
+    - admin_ui: {}
+      client_hidden: null
       name: role
       type: string
+    indexes: []
     server: full
-    title: Users
+    title: Core_Users
   Core_Verification_Settings:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: device_token_required
       type: bool
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: updated_at
       type: datetime
+    indexes: []
     server: full
-    title: Verification Settings
+    title: Core_Verification_Settings
   Inventory_Audit_Logs:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: timestamp
       type: datetime
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: equipment
       target: Inventory_Equipment
       type: link_single
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: action
       type: string
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: operator
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: from_user
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 5}
+    - admin_ui: {}
+      client_hidden: null
       name: to_user
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 6}
+    - admin_ui: {}
+      client_hidden: null
       name: old_status
       target: Inventory_Equipment_Statuses
       type: link_single
-    - admin_ui: {order: 7}
+    - admin_ui: {}
+      client_hidden: null
       name: new_status
       target: Inventory_Equipment_Statuses
       type: link_single
-    - admin_ui: {order: 8}
+    - admin_ui: {}
+      client_hidden: null
       name: details
       type: string
+    indexes: []
     server: full
-    title: Inventory Audit Logs
+    title: Inventory_Audit_Logs
   Inventory_Equipment:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: asset_tag
       type: string
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: category
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: manufacturer
       type: string
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: model
       type: string
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: serial_number
       type: string
-    - admin_ui: {order: 5}
+    - admin_ui: {}
+      client_hidden: null
       name: purchase_date
       type: date
-    - admin_ui: {order: 6}
+    - admin_ui: {}
+      client_hidden: null
       name: location
       type: string
-    - admin_ui: {order: 7}
+    - admin_ui: {}
+      client_hidden: null
       name: status
       target: Inventory_Equipment_Statuses
       type: link_single
-    - admin_ui: {order: 8}
+    - admin_ui: {}
+      client_hidden: null
       name: current_assignee
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 9}
+    - admin_ui: {}
+      client_hidden: null
       name: notes
       type: string
-    - admin_ui: {order: 10}
+    - admin_ui: {}
+      client_hidden: null
       name: created_at
       type: datetime
-    - admin_ui: {order: 11}
+    - admin_ui: {}
+      client_hidden: null
       name: updated_at
       type: datetime
+    indexes: []
     server: full
-    title: Equipment
+    title: Inventory_Equipment
   Inventory_Equipment_Assignments:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: equipment
       target: Inventory_Equipment
       type: link_single
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: from_user
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: to_user
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: assigned_at
       type: datetime
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: returned_at
       type: datetime
-    - admin_ui: {order: 5}
+    - admin_ui: {}
+      client_hidden: null
       name: assigned_by
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 6}
+    - admin_ui: {}
+      client_hidden: null
       name: notes
       type: string
+    indexes: []
     server: full
-    title: Equipment Assignments
+    title: Inventory_Equipment_Assignments
   Inventory_Equipment_Statuses:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: name
       type: string
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: description
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: active
       type: bool
+    indexes: []
     server: full
-    title: Equipment Statuses
+    title: Inventory_Equipment_Statuses
   Tracker_Audit_Logs:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: timestamp
       type: datetime
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: tdn
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: operator
       type: string
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: details
       type: string
+    indexes: []
     server: full
-    title: Audit Logs
+    title: Tracker_Audit_Logs
   Tracker_Statuses:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: name
       type: string
+    indexes: []
     server: full
-    title: Statuses
+    title: Tracker_Statuses
   Tracker_Transaction_Slips:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: slip_id
       type: string
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: requestor
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
       client_hidden: false
       name: requestor_info
       type: string
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: qr_code
       type: media
     indexes: []
     server: full
-    title: Transaction Slips
+    title: Tracker_Transaction_Slips
   Tracker_Transaction_Types:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
       client_hidden: false
       name: transaction_name
       type: string
-    - admin_ui: {order: 1, width: 200}
+    - admin_ui: {width: 200}
       client_hidden: false
       name: transaction_code
       type: string
     indexes: []
     server: full
-    title: Transaction Types
+    title: Tracker_Transaction_Types
   Tracker_Transactions:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: created_at
       type: datetime
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: tdn
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: pin
       type: string
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: owner
       type: string
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: lot_no
       type: string
-    - admin_ui: {order: 5}
+    - admin_ui: {}
+      client_hidden: null
       name: transaction_type
       type: string
-    - admin_ui: {order: 6}
+    - admin_ui: {}
+      client_hidden: null
       name: requestor
       type: string
-    - admin_ui: {order: 7}
+    - admin_ui: {}
       client_hidden: false
       name: requestor_info
       type: string
-    - admin_ui: {order: 8}
+    - admin_ui: {}
+      client_hidden: null
       name: encoder
       type: string
-    - admin_ui: {order: 9}
+    - admin_ui: {}
+      client_hidden: null
       name: status
       type: string
-    - admin_ui: {order: 10}
+    - admin_ui: {}
+      client_hidden: null
       name: remarks
       type: string
-    - admin_ui: {order: 11}
+    - admin_ui: {}
+      client_hidden: null
       name: latest_activity
       type: string
-    - admin_ui: {order: 12}
+    - admin_ui: {}
+      client_hidden: null
       name: slip_id
       type: string
-    - admin_ui: {order: 13, width: 200}
+    - admin_ui: {width: 200}
       client_hidden: false
       name: contact_person
       type: string
-    - admin_ui: {order: 14, width: 200}
+    - admin_ui: {width: 200}
       client_hidden: false
       name: contact_person_info
       type: string
-    - admin_ui: {order: 15}
+    - admin_ui: {}
+      client_hidden: null
       name: transaction_slip
       target: Tracker_Transaction_Slips
       type: link_single
     indexes: []
     server: full
-    title: Transactions
+    title: Tracker_Transactions
 dependencies: []
 metadata: {logo_img: 'asset:MASSO LOGO 20P.png', title: Transaction Tracker}
 name: Transaction Tracker Ver. 1.0 dev01
