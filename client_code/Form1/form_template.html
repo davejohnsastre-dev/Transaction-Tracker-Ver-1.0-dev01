@@ -1,5 +1,6 @@
 <anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
   <anvil-block slot="actions">
+    <anvil-component type="Button" name="transaction_button" prop:text="Transaction tracker" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="stocks_button" prop:text="Stock monitoring" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="inventory_button" prop:text="Equipment inventory" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="change_pin_button" prop:text="Change password" prop:role="secondary-button" prop:visible="false"></anvil-component>
@@ -19,6 +20,12 @@
       <anvil-component type="Label" name="login_message" prop:role="error-text"></anvil-component>
     </anvil-component>
     <anvil-component type="ColumnPanel" name="app_panel" prop:visible="false">
+      <anvil-component type="ColumnPanel" name="module_home_panel" prop:role="module-home" prop:visible="false">
+        <anvil-component type="Label" name="module_home_heading" prop:text="Select a function to continue" prop:role="section-title"></anvil-component>
+        <anvil-component type="Label" name="module_home_hint" prop:text="Choose a module from the header to open its workspace." prop:role="muted-text"></anvil-component>
+      </anvil-component>
+      <anvil-component type="Transaction_Tracker_System.Stocks" name="stocks_view" prop:visible="false"></anvil-component>
+      <anvil-component type="Transaction_Tracker_System.Inventory" name="inventory_view" prop:visible="false"></anvil-component>
       <anvil-component type="FlowPanel" name="dashboard_heading" prop:role="dashboard-heading">
         <anvil-component type="ColumnPanel" name="heading_text">
           <anvil-component type="Label" name="dashboard_title" prop:text="Transaction tracker" prop:role="dashboard-title"></anvil-component>
@@ -257,6 +264,6 @@
     </anvil-component>
   </anvil-block>
   <anvil-block slot="title">
-    <anvil-component type="Label" name="page_title" prop:text="Transaction tracker system" prop:role="h1"></anvil-component>
+    <anvil-component type="Label" name="page_title" prop:text="MUNICIPAL ASSESSOR'S OFFICE" prop:role="h1"></anvil-component>
   </anvil-block>
 </anvil-form>

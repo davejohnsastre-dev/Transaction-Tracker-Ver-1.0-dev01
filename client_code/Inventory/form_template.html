@@ -1,11 +1,7 @@
-<anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
-  <anvil-block slot="actions">
-    <anvil-component type="Button" name="back_button" prop:text="Back to transactions" prop:role="secondary-button"></anvil-component>
-  </anvil-block>
-  <anvil-block slot="title">
-    <anvil-component type="Label" name="page_title" prop:text="Office equipment inventory" prop:role="h1"></anvil-component>
-  </anvil-block>
-  <anvil-block slot="content">
+---
+custom_component: true
+---
+<anvil-form container="ColumnPanel">
     <anvil-component type="Label" name="message_label" prop:role="settings-message" prop:visible="false"></anvil-component>
     <anvil-component type="ColumnPanel" name="add_equipment_panel" prop:role="card" prop:visible="false">
       <anvil-component type="Label" name="add_heading" prop:text="Add equipment" prop:role="section-title"></anvil-component>
@@ -38,5 +34,4 @@
     <anvil-component type="RepeatingPanel" name="equipment_panel" prop:item_template="Transaction_Tracker_System.InventoryRow" prop:role="inventory-list"></anvil-component>
     <anvil-component type="Label" name="audit_heading" prop:text="Inventory audit trail" prop:role="section-title"></anvil-component>
     <anvil-component type="RepeatingPanel" name="audit_panel" prop:item_template="Transaction_Tracker_System.InventoryAuditRow" prop:role="audit-list"></anvil-component>
-  </anvil-block>
 </anvil-form>

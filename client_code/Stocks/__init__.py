@@ -12,7 +12,13 @@ class Stocks(StocksTemplate):
     self.stock_items = []
     self.stock_panel.add_event_handler("x-withdraw-stock", self.withdraw_stock)
     self.stock_panel.add_event_handler("x-add-stock", self.add_stock)
-    self._load_stocks()
+    if self.session.get("session_token"):
+      self._load_stocks()
+
+  def set_session(self, session):
+    self.session = session or {}
+    if self.session.get("session_token"):
+      self._load_stocks()
 
   def _set_message(self, message):
     self.message_label.text = message or ""
@@ -101,13 +107,3 @@ class Stocks(StocksTemplate):
         self.action_message.text = result.get("message", "Unable to record stock movement.")
     finally:
       self.action_save_button.enabled = True
-
-  @handle("back_button", "click")
-  def back_button_click(self, **event_args):
-    open_form("Transaction_Tracker_System.Form1", auth_result={
-      "username": self.session.get("username", ""),
-      "sessionToken": self.session.get("session_token", ""),
-      "employeeName": self.session.get("name", "USER"),
-      "readOnly": self.session.get("read_only", False),
-      "role": self.session.get("role", "user"),
-    })

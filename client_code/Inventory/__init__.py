@@ -11,7 +11,13 @@ class Inventory(InventoryTemplate):
     self.selected_equipment = None
     self.equipment_panel.add_event_handler("x-transfer-equipment", self.transfer_equipment)
     self.equipment_panel.add_event_handler("x-status-equipment", self.status_equipment)
-    self._load_inventory()
+    if self.session.get("session_token"):
+      self._load_inventory()
+
+  def set_session(self, session):
+    self.session = session or {}
+    if self.session.get("session_token"):
+      self._load_inventory()
 
   def _set_message(self, message):
     self.message_label.text = message or ""
@@ -106,13 +112,3 @@ class Inventory(InventoryTemplate):
         self.action_message.text = result.get("message", "Unable to save change.")
     finally:
       self.action_save_button.enabled = True
-
-  @handle("back_button", "click")
-  def back_button_click(self, **event_args):
-    open_form("Transaction_Tracker_System.Form1", auth_result={
-      "username": self.session.get("username", ""),
-      "sessionToken": self.session.get("session_token", ""),
-      "employeeName": self.session.get("name", "USER"),
-      "readOnly": self.session.get("read_only", False),
-      "role": self.session.get("role", "user"),
-    })
