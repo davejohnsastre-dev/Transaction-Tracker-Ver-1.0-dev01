@@ -163,7 +163,10 @@ def add_equipment(asset_tag, category, manufacturer, model, serial_number, locat
         return {"success": False, "message": "Asset tag and category are required."}
     if _equipment_by_tag(asset_tag):
         return {"success": False, "message": "That asset tag already exists."}
+    _ensure_default_statuses()
     status = _status_by_name(status_name)
+    if not status and not _text(status_name):
+        status = _status_by_name("AVAILABLE")
     if not status:
         return {"success": False, "message": "Select a valid inventory status."}
     assert user is not None

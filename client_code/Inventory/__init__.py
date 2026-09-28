@@ -23,6 +23,10 @@ class Inventory(InventoryTemplate):
     self.message_label.text = message or ""
     self.message_label.visible = bool(message)
 
+  def _set_add_message(self, message):
+    self.add_message.text = message or ""
+    self.add_message.visible = bool(message)
+
   def _load_inventory(self):
     result = anvil.server.call("get_inventory", self.session.get("session_token", ""))
     if not result.get("success"):
@@ -34,6 +38,8 @@ class Inventory(InventoryTemplate):
     self.audit_panel.items = result.get("audits", [])
     statuses = result.get("statuses", [])
     self.new_status_box.items = statuses
+    if self.new_status_box.selected_value not in statuses:
+      self.new_status_box.selected_value = statuses[0] if statuses else None
     self.status_box.items = statuses
     self.transfer_user_box.items = [
       (item["name"], item["username"]) for item in result.get("users", [])
@@ -58,6 +64,13 @@ class Inventory(InventoryTemplate):
 
   @handle("add_button", "click")
   def add_button_click(self, **event_args):
+    if not (self.asset_tag_box.text or "").strip():
+      self._set_add_message("Asset Tag is required.")
+      return
+    if not (self.category_box.text or "").strip():
+      self._set_add_message("Category is required.")
+      return
+    self._set_add_message("")
     self.add_button.enabled = False
     try:
       result = anvil.server.call(
@@ -77,6 +90,8 @@ class Inventory(InventoryTemplate):
         for box in (self.asset_tag_box, self.category_box, self.manufacturer_box, self.model_box, self.serial_box, self.location_box, self.new_notes_box):
           box.text = ""
         self._load_inventory()
+      else:
+        self._set_add_message(result.get("message", "Unable to add equipment."))
     finally:
       self.add_button.enabled = True
 
