@@ -32,7 +32,9 @@ class Inventory(InventoryTemplate):
     self.add_equipment_panel.visible = self.can_manage
     self.equipment_panel.items = [dict(item, can_manage=self.can_manage) for item in result.get("equipment", [])]
     self.audit_panel.items = result.get("audits", [])
-    self.status_box.items = result.get("statuses", [])
+    statuses = result.get("statuses", [])
+    self.new_status_box.items = statuses
+    self.status_box.items = statuses
     self.transfer_user_box.items = [
       (item["name"], item["username"]) for item in result.get("users", [])
     ]
