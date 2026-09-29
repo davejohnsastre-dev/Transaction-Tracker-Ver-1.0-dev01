@@ -48,7 +48,7 @@ class Inventory(InventoryTemplate):
 
   def _open_action(self, equipment, action):
     self.selected_equipment = equipment
-    self.action_heading.text = "%s · %s" % (action, equipment["asset_tag"])
+    self.action_heading.text = "%s · %s" % (action, equipment["article_item"])
     self.action_message.text = ""
     self.transfer_fields.visible = action == "Transfer"
     self.status_fields.visible = action == "Change status"
@@ -64,19 +64,19 @@ class Inventory(InventoryTemplate):
 
   @handle("add_button", "click")
   def add_button_click(self, **event_args):
-    if not (self.asset_tag_box.text or "").strip():
-      self._set_add_message("Asset Tag is required.")
+    if not (self.article_item_box.text or "").strip():
+      self._set_add_message("Article item is required.")
       return
-    if not (self.category_box.text or "").strip():
-      self._set_add_message("Category is required.")
+    if not (self.description_box.text or "").strip():
+      self._set_add_message("Description is required.")
       return
     self._set_add_message("")
     self.add_button.enabled = False
     try:
       result = anvil.server.call(
         "add_equipment",
-        self.asset_tag_box.text,
-        self.category_box.text,
+        self.article_item_box.text,
+        self.description_box.text,
         self.manufacturer_box.text,
         self.model_box.text,
         self.serial_box.text,
@@ -87,7 +87,7 @@ class Inventory(InventoryTemplate):
       )
       self._set_message(result.get("message"))
       if result.get("success"):
-        for box in (self.asset_tag_box, self.category_box, self.manufacturer_box, self.model_box, self.serial_box, self.location_box, self.new_notes_box):
+        for box in (self.article_item_box, self.description_box, self.manufacturer_box, self.model_box, self.serial_box, self.location_box, self.new_notes_box):
           box.text = ""
         self._load_inventory()
       else:
@@ -108,7 +108,7 @@ class Inventory(InventoryTemplate):
       if self.transfer_fields.visible:
         result = anvil.server.call(
           "transfer_" + "equipment",
-          self.selected_equipment["asset_tag"],
+          self.selected_equipment["article_item"],
           self.transfer_user_box.selected_value,
           self.action_notes_box.text,
           self.session.get("session_token", ""),
@@ -116,7 +116,7 @@ class Inventory(InventoryTemplate):
       else:
         result = anvil.server.call(
           "update_equipment_status",
-          self.selected_equipment["asset_tag"],
+          self.selected_equipment["article_item"],
           self.status_box.selected_value,
           self.action_notes_box.text,
           self.session.get("session_token", ""),

@@ -148,13 +148,13 @@ db_schema:
   Inventory_Equipment:
     client: none
     columns:
-    - admin_ui: {}
-      client_hidden: null
-      name: asset_tag
+    - admin_ui: {order: 0}
+      client_hidden: false
+      name: article_item
       type: string
-    - admin_ui: {}
-      client_hidden: null
-      name: category
+    - admin_ui: {order: 1}
+      client_hidden: false
+      name: description
       type: string
     - admin_ui: {}
       client_hidden: null
@@ -260,71 +260,91 @@ db_schema:
   Stocks_Additions:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: stock_item
       target: Stocks_Items
       type: link_single
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: quantity
       type: number
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: added_at
       type: datetime
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: added_by
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: notes
       type: string
+    indexes: []
     server: full
     title: Stocks_Additions
   Stocks_Items:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: name
       type: string
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: unit
       type: string
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: starting_balance
       type: number
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: current_balance
       type: number
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: active
       type: bool
-    - admin_ui: {order: 5}
+    - admin_ui: {}
+      client_hidden: null
       name: created_at
       type: datetime
-    - admin_ui: {order: 6}
+    - admin_ui: {}
+      client_hidden: null
       name: updated_at
       type: datetime
+    indexes: []
     server: full
     title: Stocks_Items
   Stocks_Withdrawals:
     client: none
     columns:
-    - admin_ui: {order: 0}
+    - admin_ui: {}
+      client_hidden: null
       name: stock_item
       target: Stocks_Items
       type: link_single
-    - admin_ui: {order: 1}
+    - admin_ui: {}
+      client_hidden: null
       name: quantity
       type: number
-    - admin_ui: {order: 2}
+    - admin_ui: {}
+      client_hidden: null
       name: withdrawn_at
       type: datetime
-    - admin_ui: {order: 3}
+    - admin_ui: {}
+      client_hidden: null
       name: withdrawn_by
       target: Core_Users
       type: link_single
-    - admin_ui: {order: 4}
+    - admin_ui: {}
+      client_hidden: null
       name: notes
       type: string
+    indexes: []
     server: full
     title: Stocks_Withdrawals
   Tracker_Audit_Logs:

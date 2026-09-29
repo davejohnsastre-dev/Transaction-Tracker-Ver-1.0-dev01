@@ -23,10 +23,10 @@ def _status_by_name(name):
     return None
 
 
-def _equipment_by_tag(asset_tag):
-    target = _upper(asset_tag)
+def _equipment_by_article_item(article_item):
+    target = _upper(article_item)
     for row in app_tables.Inventory_Equipment.search():
-        if _upper(row["asset_tag"]) == target:
+        if _upper(row["article_item"]) == target:
             return row
     return None
 
@@ -42,8 +42,8 @@ def _equipment_payload(row):
     assignee = row["current_assignee"]
     return {
         "id": row.get_id(),
-        "asset_tag": _upper(row["asset_tag"]),
-        "category": _upper(row["category"]),
+        "article_item": _upper(row["article_item"]),
+        "description": _upper(row["description"]),
         "manufacturer": _upper(row["manufacturer"]),
         "model": _upper(row["model"]),
         "serial_number": _upper(row["serial_number"]),
@@ -78,7 +78,7 @@ def _audit_payload(row):
         )
     return {
         "timestamp": row["timestamp"].strftime("%b %d, %Y %I:%M %p"),
-        "asset_tag": _upper(equipment["asset_tag"]) if equipment else "",
+        "article_item": _upper(equipment["article_item"]) if equipment else "",
         "action": _upper(row["action"]),
         "operator": _display_user(operator),
         "details": _upper(details),
@@ -123,7 +123,7 @@ def get_inventory(session_token):
     _ensure_default_statuses()
     equipment = sorted(
         (_equipment_payload(row) for row in app_tables.Inventory_Equipment.search()),
-        key=lambda item: item["asset_tag"],
+        key=lambda item: item["article_item"],
     )
     statuses = sorted(
         (_upper(row["name"]) for row in app_tables.Inventory_Equipment_Statuses.search() if row["active"] is not False),
@@ -153,16 +153,16 @@ def get_inventory(session_token):
 
 
 @anvil.server.callable
-def add_equipment(asset_tag, category, manufacturer, model, serial_number, location, status_name, notes, session_token):
+def add_equipment(article_item, description, manufacturer, model, serial_number, location, status_name, notes, session_token):
     user, error = _require_admin(session_token)
     if error:
         return error
-    asset_tag = _upper(asset_tag)
-    category = _upper(category)
-    if not asset_tag or not category:
-        return {"success": False, "message": "Asset tag and category are required."}
-    if _equipment_by_tag(asset_tag):
-        return {"success": False, "message": "That asset tag already exists."}
+    article_item = _upper(article_item)
+    description = _upper(description)
+    if not article_item or not description:
+        return {"success": False, "message": "Article item and description are required."}
+    if _equipment_by_article_item(article_item):
+        return {"success": False, "message": "That article item already exists."}
     _ensure_default_statuses()
     status = _status_by_name(status_name)
     if not status and not _text(status_name):
@@ -172,8 +172,8 @@ def add_equipment(asset_tag, category, manufacturer, model, serial_number, locat
     assert user is not None
     now = datetime.now(anvil.tz.UTC)
     equipment = app_tables.Inventory_Equipment.add_row(
-        asset_tag=asset_tag,
-        category=category,
+        article_item=article_item,
+        description=description,
         manufacturer=_upper(manufacturer),
         model=_upper(model),
         serial_number=_upper(serial_number),
@@ -188,11 +188,11 @@ def add_equipment(asset_tag, category, manufacturer, model, serial_number, locat
 
 
 @anvil.server.callable
-def transfer_equipment(asset_tag, username, notes, session_token):
+def transfer_equipment(article_item, username, notes, session_token):
     operator, error = _require_admin(session_token)
     if error:
         return error
-    equipment = _equipment_by_tag(asset_tag)
+    equipment = _equipment_by_article_item(article_item)
     target = _user_by_username(username)
     if not equipment or not target or target["enabled"] is False:
         return {"success": False, "message": "Select an existing enabled employee and equipment."}
@@ -230,11 +230,11 @@ def transfer_equipment(asset_tag, username, notes, session_token):
 
 
 @anvil.server.callable
-def update_equipment_status(asset_tag, status_name, notes, session_token):
+def update_equipment_status(article_item, status_name, notes, session_token):
     operator, error = _require_admin(session_token)
     if error:
         return error
-    equipment = _equipment_by_tag(asset_tag)
+    equipment = _equipment_by_article_item(article_item)
     status = _status_by_name(status_name)
     if not equipment or not status:
         return {"success": False, "message": "Select existing equipment and a valid status."}
