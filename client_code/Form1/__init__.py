@@ -932,7 +932,6 @@ class Form1(Form1Template):
         self._show_records_view()
         self._reset_record_editor()
         self.refresh_records()
-        self.print_slip_button.visible = True
         self._print_slip()
       else:
         self._set_message(self.editor_message, result.get("message", "Database save failed."))
@@ -1093,16 +1092,33 @@ class Form1(Form1Template):
     afterprint_handler = anvil.js.report_exceptions(hide_after_print)
     window.addEventListener("afterprint", afterprint_handler)
 
-    def print_after_render(_timestamp=None):
-      def print_now():
-        window.print()
-      window.setTimeout(anvil.js.report_exceptions(print_now), 400)
+    def print_now(_timestamp=None):
+      window.print()
 
-    window.requestAnimationFrame(anvil.js.report_exceptions(print_after_render))
+    def wait_for_qr(_timestamp=None):
+      qr_image = anvil.js.get_dom_node(self.print_qr_code)
 
-  @handle("print_slip_button", "click")
-  def print_slip_button_click(self, **event_args):
-    self._print_slip()
+      def qr_ready(_event=None):
+        qr_image.removeEventListener("load", qr_ready_handler)
+        qr_image.removeEventListener("error", qr_error_handler)
+        window.requestAnimationFrame(anvil.js.report_exceptions(print_now))
+
+      def qr_failed(_event=None):
+        qr_image.removeEventListener("load", qr_ready_handler)
+        qr_image.removeEventListener("error", qr_error_handler)
+        window.removeEventListener("afterprint", afterprint_handler)
+        self.print_slip.visible = False
+        self._set_message(self.records_message, "The QR code could not be loaded. Please try printing again.")
+
+      qr_ready_handler = anvil.js.report_exceptions(qr_ready)
+      qr_error_handler = anvil.js.report_exceptions(qr_failed)
+      if getattr(qr_image, "complete", False) and getattr(qr_image, "naturalWidth", 0):
+        qr_ready()
+      else:
+        qr_image.addEventListener("load", qr_ready_handler)
+        qr_image.addEventListener("error", qr_error_handler)
+
+    window.requestAnimationFrame(anvil.js.report_exceptions(wait_for_qr))
 
   @handle("search_button", "click")
   def search_button_click(self, **event_args):
@@ -1234,7 +1250,6 @@ class Form1(Form1Template):
       "qr_code": slip.get("qr_code"),
       "requests": result.get("records", []),
     })
-    self.print_slip_button.visible = True
     self._print_slip()
 
   def transaction_items_panel_edit_transaction(self, item, **event_args):

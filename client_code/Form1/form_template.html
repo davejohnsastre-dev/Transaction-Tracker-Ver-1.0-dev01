@@ -46,7 +46,7 @@
             <anvil-component type="Button" name="refresh_button" prop:text="Refresh" prop:role="secondary-button"></anvil-component>
           </div>
         </anvil-component>
-          <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
+        <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
         <div class="records-table-viewport">
           <div class="records-table-header">
             <anvil-component type="Button" name="sort_created_button" prop:text="↓" prop:role="sort-button" prop:tooltip="Newest transactions first"></anvil-component>
@@ -161,13 +161,13 @@
       <anvil-component type="ColumnPanel" name="settings_editor" prop:role="settings-editor" prop:visible="false">
         <anvil-component type="FlowPanel" name="settings_header" prop:role="modal-header">
           <anvil-component type="Label" name="settings_heading" prop:text="Settings" prop:role="section-title"></anvil-component>
-          <anvil-component type="Button" name="settings_back_button" prop:text="Back to transactions" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_back_button" prop:text="Home" prop:role="secondary-button"></anvil-component>
         </anvil-component>
         <anvil-component type="Label" name="settings_message" prop:role="settings-message" prop:visible="false"></anvil-component>
         <anvil-component type="FlowPanel" name="settings_selector" prop:role="settings-selector">
           <anvil-component type="Button" name="settings_users_button" prop:text="Users" prop:role="primary-button"></anvil-component>
           <anvil-component type="Button" name="settings_statuses_button" prop:text="Status" prop:role="secondary-button"></anvil-component>
-          <anvil-component type="Button" name="settings_types_button" prop:text="Transaction types" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_types_button" prop:text="Transaction Types" prop:role="secondary-button"></anvil-component>
           <anvil-component type="Button" name="settings_devices_button" prop:text="Devices" prop:role="secondary-button"></anvil-component>
         </anvil-component>
         <anvil-component type="Label" name="settings_selector_hint" prop:text="Select a settings category to continue." prop:role="muted-text"></anvil-component>
@@ -243,7 +243,6 @@
           </anvil-component>
         </anvil-component>
       </anvil-component>
-      <anvil-component type="Button" name="print_slip_button" prop:text="Print last routing slip" prop:role="secondary-button" prop:visible="false"></anvil-component>
     </anvil-component>
     <anvil-component type="ColumnPanel" name="print_slip" prop:role="print-slip" prop:visible="false">
       <anvil-component type="FlowPanel" name="print_meta" prop:role="print-meta">
