@@ -14,6 +14,10 @@
   --anvil-banner-height: %anvil-banner-height%;
 }
 
+.anvil-role-developer-credit {
+  color: red;
+}
+
 body {
   min-height: 100vh;
   min-height: calc(100vh - var(--anvil-banner-height, 0px));
@@ -45,6 +49,32 @@ body {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 8px;
+}
+
+.page-actions .anvil-button > button {
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--blank-border);
+  border-radius: 6px;
+  background: var(--blank-surface);
+  color: var(--blank-primary-dark);
+}
+
+.page-actions .anvil-button > button:hover,
+.page-actions .anvil-button > button:focus {
+  background: var(--blank-surface-muted);
+  color: var(--blank-primary-dark);
+}
+
+.page-actions .anvil-role-primary-button > button {
+  border-left: 4px solid var(--blank-primary);
+  padding-left: 11px;
+}
+
+.page-header .anvil-role-h1 {
+  color: var(--blank-primary);
+  font-size: 30px;
+  letter-spacing: 0.01em;
 }
 
 .page-main {
@@ -86,6 +116,19 @@ a:focus {
 .page-header a.is-active {
   background: var(--blank-surface-muted);
   color: var(--blank-primary-dark);
+}
+
+.page-header > div > .subtitle {
+  display: none;
+}
+
+.anvil-role-module-home {
+  min-height: 320px;
+  box-sizing: border-box;
+  padding: 32px;
+  border: 1px solid var(--blank-border);
+  border-radius: 8px;
+  background: var(--blank-surface);
 }
 
 .anvil-role-h1 {

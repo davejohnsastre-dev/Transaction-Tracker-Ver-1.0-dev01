@@ -23,10 +23,10 @@ def _status_by_name(name):
     return None
 
 
-def _equipment_by_tag(asset_tag):
-    target = _upper(asset_tag)
+def _equipment_by_article_item(article_item):
+    target = _upper(article_item)
     for row in app_tables.Inventory_Equipment.search():
-        if _upper(row["asset_tag"]) == target:
+        if _upper(row["article_item"]) == target:
             return row
     return None
 
@@ -34,7 +34,7 @@ def _equipment_by_tag(asset_tag):
 def _display_user(row):
     if not row:
         return "Unassigned"
-    return _text(row["employee_name"]) or _text(row["username"])
+    return _upper(row["employee_name"]) or _upper(row["username"])
 
 
 def _equipment_payload(row):
@@ -42,16 +42,16 @@ def _equipment_payload(row):
     assignee = row["current_assignee"]
     return {
         "id": row.get_id(),
-        "asset_tag": _upper(row["asset_tag"]),
-        "category": _text(row["category"]),
-        "manufacturer": _text(row["manufacturer"]),
-        "model": _text(row["model"]),
-        "serial_number": _text(row["serial_number"]),
-        "location": _text(row["location"]),
-        "status": _text(status["name"]) if status else "No status",
+        "article_item": _upper(row["article_item"]),
+        "description": _upper(row["description"]),
+        "manufacturer": _upper(row["manufacturer"]),
+        "model": _upper(row["model"]),
+        "serial_number": _upper(row["serial_number"]),
+        "location": _upper(row["location"]),
+        "status": _upper(status["name"]) if status else "NO STATUS",
         "assignee": _display_user(assignee),
-        "assignee_username": _text(assignee["username"]) if assignee else "",
-        "notes": _text(row["notes"]),
+        "assignee_username": _upper(assignee["username"]) if assignee else "",
+        "notes": _upper(row["notes"]),
         "updated_at": row["updated_at"].strftime("%b %d, %Y %I:%M %p") if row["updated_at"] else "Never",
     }
 
@@ -63,7 +63,7 @@ def _audit_payload(row):
     to_user = row["to_user"]
     old_status = row["old_status"]
     new_status = row["new_status"]
-    details = _text(row["details"])
+    details = _upper(row["details"])
     if from_user or to_user:
         details = "%s → %s%s" % (
             _display_user(from_user),
@@ -72,16 +72,16 @@ def _audit_payload(row):
         )
     if old_status or new_status:
         details = "%s → %s%s" % (
-            _text(old_status["name"]) if old_status else "None",
-            _text(new_status["name"]) if new_status else "None",
+            _upper(old_status["name"]) if old_status else "NONE",
+            _upper(new_status["name"]) if new_status else "NONE",
             (" · " + details) if details else "",
         )
     return {
         "timestamp": row["timestamp"].strftime("%b %d, %Y %I:%M %p"),
-        "asset_tag": _text(equipment["asset_tag"]) if equipment else "",
-        "action": _text(row["action"]),
+        "article_item": _upper(equipment["article_item"]) if equipment else "",
+        "action": _upper(row["action"]),
         "operator": _display_user(operator),
-        "details": details,
+        "details": _upper(details),
     }
 
 
@@ -91,7 +91,7 @@ def _write_inventory_audit(equipment, action, operator, **values):
         "equipment": equipment,
         "action": action,
         "operator": operator,
-        "details": _text(values.get("details")),
+        "details": _upper(values.get("details")),
     }
     for field in ("from_user", "to_user", "old_status", "new_status"):
         value = values.get(field)
@@ -123,10 +123,10 @@ def get_inventory(session_token):
     _ensure_default_statuses()
     equipment = sorted(
         (_equipment_payload(row) for row in app_tables.Inventory_Equipment.search()),
-        key=lambda item: item["asset_tag"],
+        key=lambda item: item["article_item"],
     )
     statuses = sorted(
-        (_text(row["name"]) for row in app_tables.Inventory_Equipment_Statuses.search() if row["active"] is not False),
+        (_upper(row["name"]) for row in app_tables.Inventory_Equipment_Statuses.search() if row["active"] is not False),
         key=str.upper,
     )
     users = sorted(
@@ -153,30 +153,33 @@ def get_inventory(session_token):
 
 
 @anvil.server.callable
-def add_equipment(asset_tag, category, manufacturer, model, serial_number, location, status_name, notes, session_token):
+def add_equipment(article_item, description, manufacturer, model, serial_number, location, status_name, notes, session_token):
     user, error = _require_admin(session_token)
     if error:
         return error
-    asset_tag = _upper(asset_tag)
-    category = _text(category)
-    if not asset_tag or not category:
-        return {"success": False, "message": "Asset tag and category are required."}
-    if _equipment_by_tag(asset_tag):
-        return {"success": False, "message": "That asset tag already exists."}
+    article_item = _upper(article_item)
+    description = _upper(description)
+    if not article_item or not description:
+        return {"success": False, "message": "Article item and description are required."}
+    if _equipment_by_article_item(article_item):
+        return {"success": False, "message": "That article item already exists."}
+    _ensure_default_statuses()
     status = _status_by_name(status_name)
+    if not status and not _text(status_name):
+        status = _status_by_name("AVAILABLE")
     if not status:
         return {"success": False, "message": "Select a valid inventory status."}
     assert user is not None
     now = datetime.now(anvil.tz.UTC)
     equipment = app_tables.Inventory_Equipment.add_row(
-        asset_tag=asset_tag,
-        category=category,
-        manufacturer=_text(manufacturer),
-        model=_text(model),
-        serial_number=_text(serial_number),
-        location=_text(location),
+        article_item=article_item,
+        description=description,
+        manufacturer=_upper(manufacturer),
+        model=_upper(model),
+        serial_number=_upper(serial_number),
+        location=_upper(location),
         status=status,
-        notes=_text(notes),
+        notes=_upper(notes),
         created_at=now,
         updated_at=now,
     )
@@ -185,11 +188,11 @@ def add_equipment(asset_tag, category, manufacturer, model, serial_number, locat
 
 
 @anvil.server.callable
-def transfer_equipment(asset_tag, username, notes, session_token):
+def transfer_equipment(article_item, username, notes, session_token):
     operator, error = _require_admin(session_token)
     if error:
         return error
-    equipment = _equipment_by_tag(asset_tag)
+    equipment = _equipment_by_article_item(article_item)
     target = _user_by_username(username)
     if not equipment or not target or target["enabled"] is False:
         return {"success": False, "message": "Select an existing enabled employee and equipment."}
@@ -211,27 +214,27 @@ def transfer_equipment(asset_tag, username, notes, session_token):
     if previous:
         app_tables.Inventory_Equipment_Assignments.add_row(
             equipment=equipment, from_user=previous, to_user=target,
-            assigned_at=now, assigned_by=operator, notes=_text(notes),
+            assigned_at=now, assigned_by=operator, notes=_upper(notes),
         )
     else:
         app_tables.Inventory_Equipment_Assignments.add_row(
             equipment=equipment, to_user=target, assigned_at=now,
-            assigned_by=operator, notes=_text(notes),
+            assigned_by=operator, notes=_upper(notes),
         )
     _write_inventory_audit(
         equipment, "TRANSFERRED", operator, from_user=previous, to_user=target,
         old_status=old_status, new_status=assigned_status or old_status,
-        details=_text(notes),
+        details=_upper(notes),
     )
     return {"success": True, "message": "Equipment transferred."}
 
 
 @anvil.server.callable
-def update_equipment_status(asset_tag, status_name, notes, session_token):
+def update_equipment_status(article_item, status_name, notes, session_token):
     operator, error = _require_admin(session_token)
     if error:
         return error
-    equipment = _equipment_by_tag(asset_tag)
+    equipment = _equipment_by_article_item(article_item)
     status = _status_by_name(status_name)
     if not equipment or not status:
         return {"success": False, "message": "Select existing equipment and a valid status."}
@@ -241,6 +244,6 @@ def update_equipment_status(asset_tag, status_name, notes, session_token):
     equipment["updated_at"] = now
     _write_inventory_audit(
         equipment, "STATUS CHANGED", operator, old_status=old_status,
-        new_status=status, details=_text(notes),
+        new_status=status, details=_upper(notes),
     )
     return {"success": True, "message": "Equipment status updated."}

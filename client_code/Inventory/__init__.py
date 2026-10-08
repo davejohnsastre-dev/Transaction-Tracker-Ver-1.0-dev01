@@ -11,11 +11,21 @@ class Inventory(InventoryTemplate):
     self.selected_equipment = None
     self.equipment_panel.add_event_handler("x-transfer-equipment", self.transfer_equipment)
     self.equipment_panel.add_event_handler("x-status-equipment", self.status_equipment)
-    self._load_inventory()
+    if self.session.get("session_token"):
+      self._load_inventory()
+
+  def set_session(self, session):
+    self.session = session or {}
+    if self.session.get("session_token"):
+      self._load_inventory()
 
   def _set_message(self, message):
     self.message_label.text = message or ""
     self.message_label.visible = bool(message)
+
+  def _set_add_message(self, message):
+    self.add_message.text = message or ""
+    self.add_message.visible = bool(message)
 
   def _load_inventory(self):
     result = anvil.server.call("get_inventory", self.session.get("session_token", ""))
@@ -26,7 +36,11 @@ class Inventory(InventoryTemplate):
     self.add_equipment_panel.visible = self.can_manage
     self.equipment_panel.items = [dict(item, can_manage=self.can_manage) for item in result.get("equipment", [])]
     self.audit_panel.items = result.get("audits", [])
-    self.status_box.items = result.get("statuses", [])
+    statuses = result.get("statuses", [])
+    self.new_status_box.items = statuses
+    if self.new_status_box.selected_value not in statuses:
+      self.new_status_box.selected_value = statuses[0] if statuses else None
+    self.status_box.items = statuses
     self.transfer_user_box.items = [
       (item["name"], item["username"]) for item in result.get("users", [])
     ]
@@ -34,7 +48,7 @@ class Inventory(InventoryTemplate):
 
   def _open_action(self, equipment, action):
     self.selected_equipment = equipment
-    self.action_heading.text = "%s · %s" % (action, equipment["asset_tag"])
+    self.action_heading.text = "%s · %s" % (action, equipment["article_item"])
     self.action_message.text = ""
     self.transfer_fields.visible = action == "Transfer"
     self.status_fields.visible = action == "Change status"
@@ -50,12 +64,19 @@ class Inventory(InventoryTemplate):
 
   @handle("add_button", "click")
   def add_button_click(self, **event_args):
+    if not (self.article_item_box.text or "").strip():
+      self._set_add_message("Article item is required.")
+      return
+    if not (self.description_box.text or "").strip():
+      self._set_add_message("Description is required.")
+      return
+    self._set_add_message("")
     self.add_button.enabled = False
     try:
       result = anvil.server.call(
         "add_equipment",
-        self.asset_tag_box.text,
-        self.category_box.text,
+        self.article_item_box.text,
+        self.description_box.text,
         self.manufacturer_box.text,
         self.model_box.text,
         self.serial_box.text,
@@ -66,9 +87,11 @@ class Inventory(InventoryTemplate):
       )
       self._set_message(result.get("message"))
       if result.get("success"):
-        for box in (self.asset_tag_box, self.category_box, self.manufacturer_box, self.model_box, self.serial_box, self.location_box, self.new_notes_box):
+        for box in (self.article_item_box, self.description_box, self.manufacturer_box, self.model_box, self.serial_box, self.location_box, self.new_notes_box):
           box.text = ""
         self._load_inventory()
+      else:
+        self._set_add_message(result.get("message", "Unable to add equipment."))
     finally:
       self.add_button.enabled = True
 
@@ -85,7 +108,7 @@ class Inventory(InventoryTemplate):
       if self.transfer_fields.visible:
         result = anvil.server.call(
           "transfer_" + "equipment",
-          self.selected_equipment["asset_tag"],
+          self.selected_equipment["article_item"],
           self.transfer_user_box.selected_value,
           self.action_notes_box.text,
           self.session.get("session_token", ""),
@@ -93,7 +116,7 @@ class Inventory(InventoryTemplate):
       else:
         result = anvil.server.call(
           "update_equipment_status",
-          self.selected_equipment["asset_tag"],
+          self.selected_equipment["article_item"],
           self.status_box.selected_value,
           self.action_notes_box.text,
           self.session.get("session_token", ""),
@@ -106,13 +129,3 @@ class Inventory(InventoryTemplate):
         self.action_message.text = result.get("message", "Unable to save change.")
     finally:
       self.action_save_button.enabled = True
-
-  @handle("back_button", "click")
-  def back_button_click(self, **event_args):
-    open_form("Transaction_Tracker_System.Form1", auth_result={
-      "username": self.session.get("username", ""),
-      "sessionToken": self.session.get("session_token", ""),
-      "employeeName": self.session.get("name", "USER"),
-      "readOnly": self.session.get("read_only", False),
-      "role": self.session.get("role", "user"),
-    })

@@ -1,6 +1,8 @@
 <anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
   <anvil-block slot="actions">
-    <anvil-component type="Button" name="inventory_button" prop:text="Equipment inventory" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="transaction_button" prop:text="Transaction Tracker" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="stocks_button" prop:text="Stock Monitoring" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="inventory_button" prop:text="Equipment Inventory" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="change_pin_button" prop:text="Change password" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="settings_button" prop:text="Settings" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="logout_button" prop:text="Log out" prop:role="secondary-button" prop:visible="false"></anvil-component>
@@ -18,9 +20,17 @@
       <anvil-component type="Label" name="login_message" prop:role="error-text"></anvil-component>
     </anvil-component>
     <anvil-component type="ColumnPanel" name="app_panel" prop:visible="false">
+      <anvil-component type="ColumnPanel" name="module_home_panel" prop:role="module-home" prop:visible="false">
+        <anvil-component type="Label" name="module_home_heading" prop:text="Select a function from the header to continue" prop:role="section-title"></anvil-component>
+        <br />
+        <br />
+        <anvil-component type="Label" name="module_home_hint" prop:text="Developed and Maintained by: Dave John T. Sastre." prop:role="developer-credit" prop:italic="true"></anvil-component>
+      </anvil-component>
+      <anvil-component type="Transaction_Tracker_System.Stocks" name="stocks_view" prop:visible="false"></anvil-component>
+      <anvil-component type="Transaction_Tracker_System.Inventory" name="inventory_view" prop:visible="false"></anvil-component>
       <anvil-component type="FlowPanel" name="dashboard_heading" prop:role="dashboard-heading">
         <anvil-component type="ColumnPanel" name="heading_text">
-          <anvil-component type="Label" name="dashboard_title" prop:text="Transaction tracker" prop:role="dashboard-title"></anvil-component>
+          <anvil-component type="Label" name="dashboard_title" prop:text="Transaction Tracker" prop:role="dashboard-title"></anvil-component>
           <anvil-component type="Label" name="welcome_label" prop:role="muted-text"></anvil-component>
         </anvil-component>
         <div class="dashboard-heading-action">
@@ -38,7 +48,7 @@
             <anvil-component type="Button" name="refresh_button" prop:text="Refresh" prop:role="secondary-button"></anvil-component>
           </div>
         </anvil-component>
-          <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
+        <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
         <div class="records-table-viewport">
           <div class="records-table-header">
             <anvil-component type="Button" name="sort_created_button" prop:text="↓" prop:role="sort-button" prop:tooltip="Newest transactions first"></anvil-component>
@@ -153,13 +163,13 @@
       <anvil-component type="ColumnPanel" name="settings_editor" prop:role="settings-editor" prop:visible="false">
         <anvil-component type="FlowPanel" name="settings_header" prop:role="modal-header">
           <anvil-component type="Label" name="settings_heading" prop:text="Settings" prop:role="section-title"></anvil-component>
-          <anvil-component type="Button" name="settings_back_button" prop:text="Back to transactions" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_back_button" prop:text="Home" prop:role="secondary-button"></anvil-component>
         </anvil-component>
         <anvil-component type="Label" name="settings_message" prop:role="settings-message" prop:visible="false"></anvil-component>
         <anvil-component type="FlowPanel" name="settings_selector" prop:role="settings-selector">
           <anvil-component type="Button" name="settings_users_button" prop:text="Users" prop:role="primary-button"></anvil-component>
           <anvil-component type="Button" name="settings_statuses_button" prop:text="Status" prop:role="secondary-button"></anvil-component>
-          <anvil-component type="Button" name="settings_types_button" prop:text="Transaction types" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="settings_types_button" prop:text="Transaction Types" prop:role="secondary-button"></anvil-component>
           <anvil-component type="Button" name="settings_devices_button" prop:text="Devices" prop:role="secondary-button"></anvil-component>
         </anvil-component>
         <anvil-component type="Label" name="settings_selector_hint" prop:text="Select a settings category to continue." prop:role="muted-text"></anvil-component>
@@ -235,7 +245,6 @@
           </anvil-component>
         </anvil-component>
       </anvil-component>
-      <anvil-component type="Button" name="print_slip_button" prop:text="Print last routing slip" prop:role="secondary-button" prop:visible="false"></anvil-component>
     </anvil-component>
     <anvil-component type="ColumnPanel" name="print_slip" prop:role="print-slip" prop:visible="false">
       <anvil-component type="FlowPanel" name="print_meta" prop:role="print-meta">
@@ -256,6 +265,6 @@
     </anvil-component>
   </anvil-block>
   <anvil-block slot="title">
-    <anvil-component type="Label" name="page_title" prop:text="Transaction tracker system" prop:role="h1"></anvil-component>
+    <anvil-component type="Label" name="page_title" prop:text="MUNICIPAL ASSESSOR'S OFFICE" prop:role="h1"></anvil-component>
   </anvil-block>
 </anvil-form>

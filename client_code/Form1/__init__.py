@@ -150,8 +150,10 @@ class Form1(Form1Template):
     read_only = self.session.get("read_only", False)
     self.login_panel.visible = False
     self.app_panel.visible = True
+    self.transaction_button.visible = True
     self.change_pin_button.visible = not read_only
     self.inventory_button.visible = True
+    self.stocks_button.visible = True
     self.settings_button.visible = (
       not read_only
       and self.session.get("role") == "admin"
@@ -162,6 +164,9 @@ class Form1(Form1Template):
       self.session["name"],
       " (View only)" if read_only else "",
     )
+    self._show_module_home_view()
+    self.stocks_view.set_session(self.session)
+    self.inventory_view.set_session(self.session)
     if not read_only:
       backfill_result = anvil.server.call(
         "backfill_transaction_slip_ids",
@@ -241,8 +246,10 @@ class Form1(Form1Template):
       self.session = {"username": "", "session_token": "", "name": "", "read_only": False, "role": ""}
       self.login_panel.visible = True
       self.app_panel.visible = False
+      self.transaction_button.visible = False
       self.change_pin_button.visible = False
       self.inventory_button.visible = False
+      self.stocks_button.visible = False
       self.settings_button.visible = False
       self.logout_button.visible = False
       self.pin_box.text = ""
@@ -253,9 +260,17 @@ class Form1(Form1Template):
     self.pin_editor.visible = True
     self.old_pin_box.focus()
 
+  @handle("transaction_button", "click")
+  def transaction_button_click(self, **event_args):
+    self._show_records_view()
+
   @handle("inventory_button", "click")
   def inventory_button_click(self, **event_args):
-    open_form("Transaction_Tracker_System.Inventory", session=self.session)
+    self._show_inventory_view()
+
+  @handle("stocks_button", "click")
+  def stocks_button_click(self, **event_args):
+    self._show_stocks_view()
 
   @handle("cancel_pin_button", "click")
   def cancel_pin_button_click(self, **event_args):
@@ -286,6 +301,14 @@ class Form1(Form1Template):
       self.save_pin_button.text = "Save new password"
 
   def _hide_editors(self):
+    self.module_home_panel.visible = False
+    self.stocks_view.visible = False
+    self.inventory_view.visible = False
+    self.dashboard_heading.visible = False
+    self.records_card.visible = False
+    self.transaction_button.role = "secondary-button"
+    self.stocks_button.role = "secondary-button"
+    self.inventory_button.role = "secondary-button"
     self.record_editor.visible = False
     self.pin_editor.visible = False
     self.logs_editor.visible = False
@@ -294,20 +317,55 @@ class Form1(Form1Template):
     self.update_modal.visible = False
 
   def _show_records_view(self):
+    self.module_home_panel.visible = False
+    self.stocks_view.visible = False
+    self.inventory_view.visible = False
     self.dashboard_heading.visible = True
     self.records_card.visible = True
     self.record_editor.visible = False
     self.pin_editor.visible = False
     self.logs_editor.visible = False
     self.settings_editor.visible = False
+    self.transaction_button.role = "primary-button"
+    self.stocks_button.role = "secondary-button"
+    self.inventory_button.role = "secondary-button"
 
   def _show_record_entry_view(self):
+    self.module_home_panel.visible = False
+    self.stocks_view.visible = False
+    self.inventory_view.visible = False
     self.dashboard_heading.visible = False
     self.records_card.visible = False
     self.pin_editor.visible = False
     self.logs_editor.visible = False
     self.settings_editor.visible = False
     self.record_editor.visible = True
+
+  def _show_module_home_view(self):
+    self.module_home_panel.visible = True
+    self.stocks_view.visible = False
+    self.inventory_view.visible = False
+    self.dashboard_heading.visible = False
+    self.records_card.visible = False
+    self.record_editor.visible = False
+    self.pin_editor.visible = False
+    self.logs_editor.visible = False
+    self.settings_editor.visible = False
+    self.transaction_button.role = "secondary-button"
+
+  def _show_stocks_view(self):
+    self._hide_editors()
+    self.stocks_view.visible = True
+    self.stocks_view.set_session(self.session)
+    self.stocks_button.role = "primary-button"
+    self.inventory_button.role = "secondary-button"
+
+  def _show_inventory_view(self):
+    self._hide_editors()
+    self.inventory_view.visible = True
+    self.inventory_view.set_session(self.session)
+    self.inventory_button.role = "primary-button"
+    self.stocks_button.role = "secondary-button"
 
   def _is_admin_session(self):
     return (
@@ -874,7 +932,6 @@ class Form1(Form1Template):
         self._show_records_view()
         self._reset_record_editor()
         self.refresh_records()
-        self.print_slip_button.visible = True
         self._print_slip()
       else:
         self._set_message(self.editor_message, result.get("message", "Database save failed."))
@@ -1035,16 +1092,10 @@ class Form1(Form1Template):
     afterprint_handler = anvil.js.report_exceptions(hide_after_print)
     window.addEventListener("afterprint", afterprint_handler)
 
-    def print_after_render(_timestamp=None):
-      def print_now():
-        window.print()
-      window.setTimeout(anvil.js.report_exceptions(print_now), 400)
+    def print_now(_timestamp=None):
+      window.print()
 
-    window.requestAnimationFrame(anvil.js.report_exceptions(print_after_render))
-
-  @handle("print_slip_button", "click")
-  def print_slip_button_click(self, **event_args):
-    self._print_slip()
+    window.setTimeout(anvil.js.report_exceptions(print_now), 400)
 
   @handle("search_button", "click")
   def search_button_click(self, **event_args):
@@ -1176,7 +1227,6 @@ class Form1(Form1Template):
       "qr_code": slip.get("qr_code"),
       "requests": result.get("records", []),
     })
-    self.print_slip_button.visible = True
     self._print_slip()
 
   def transaction_items_panel_edit_transaction(self, item, **event_args):

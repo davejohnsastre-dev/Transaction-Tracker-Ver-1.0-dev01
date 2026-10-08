@@ -1,7 +1,7 @@
 <anvil-form container="FlowPanel" prop:role="inventory-row">
   <anvil-component type="ColumnPanel" name="inventory_details" prop:role="inventory-details">
-    <anvil-component type="Label" name="asset_tag_label" prop:role="row-primary" bind:text="self.item['asset_tag']"></anvil-component>
-    <anvil-component type="Label" name="description_label" prop:role="muted-text" bind:text="self.item['category']"></anvil-component>
+    <anvil-component type="Label" name="article_item_label" prop:role="row-primary" bind:text="self.item['article_item']"></anvil-component>
+    <anvil-component type="Label" name="description_label" prop:role="muted-text" bind:text="self.item['description']"></anvil-component>
     <anvil-component type="Label" name="assignment_label" bind:text="self.item['assignee']"></anvil-component>
   </anvil-component>
   <anvil-component type="ColumnPanel" name="inventory_state" prop:role="inventory-state">

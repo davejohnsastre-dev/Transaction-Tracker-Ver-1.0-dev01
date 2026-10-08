@@ -1,0 +1,14 @@
+<anvil-form container="FlowPanel" prop:role="inventory-row">
+  <anvil-component type="ColumnPanel" name="stock_details" prop:role="inventory-details">
+    <anvil-component type="Label" name="name_label" prop:role="row-primary" bind:text="self.item['name']"></anvil-component>
+    <anvil-component type="Label" name="unit_label" prop:role="muted-text" bind:text="self.item['unit']"></anvil-component>
+  </anvil-component>
+  <anvil-component type="ColumnPanel" name="stock_balance" prop:role="inventory-state">
+    <anvil-component type="Label" name="balance_label" prop:role="status-badge" bind:text="self.item['balance_display']"></anvil-component>
+    <anvil-component type="Label" name="starting_label" prop:role="muted-text" text="Starting balance recorded"></anvil-component>
+  </anvil-component>
+  <anvil-component type="FlowPanel" name="stock_actions" prop:role="record-row-actions">
+    <anvil-component type="Button" name="add_stock_button" prop:text="Add stock" prop:role="secondary-button"></anvil-component>
+    <anvil-component type="Button" name="withdraw_button" prop:text="Withdraw" prop:role="primary-button"></anvil-component>
+  </anvil-component>
+</anvil-form>
