@@ -1,8 +1,8 @@
 <anvil-form layout="Transaction_Tracker_System.Layouts.BaseLayout">
   <anvil-block slot="actions">
-    <anvil-component type="Button" name="transaction_button" prop:text="Transaction tracker" prop:role="secondary-button" prop:visible="false"></anvil-component>
-    <anvil-component type="Button" name="stocks_button" prop:text="Stock monitoring" prop:role="secondary-button" prop:visible="false"></anvil-component>
-    <anvil-component type="Button" name="inventory_button" prop:text="Equipment inventory" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="transaction_button" prop:text="Transaction Tracker" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="stocks_button" prop:text="Stock Monitoring" prop:role="secondary-button" prop:visible="false"></anvil-component>
+    <anvil-component type="Button" name="inventory_button" prop:text="Equipment Inventory" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="change_pin_button" prop:text="Change password" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="settings_button" prop:text="Settings" prop:role="secondary-button" prop:visible="false"></anvil-component>
     <anvil-component type="Button" name="logout_button" prop:text="Log out" prop:role="secondary-button" prop:visible="false"></anvil-component>
@@ -21,14 +21,16 @@
     </anvil-component>
     <anvil-component type="ColumnPanel" name="app_panel" prop:visible="false">
       <anvil-component type="ColumnPanel" name="module_home_panel" prop:role="module-home" prop:visible="false">
-        <anvil-component type="Label" name="module_home_heading" prop:text="Select a function to continue" prop:role="section-title"></anvil-component>
-        <anvil-component type="Label" name="module_home_hint" prop:text="Choose a module from the header to open its workspace." prop:role="muted-text"></anvil-component>
+        <anvil-component type="Label" name="module_home_heading" prop:text="Select a function from the header to continue" prop:role="section-title"></anvil-component>
+        <br />
+        <br />
+        <anvil-component type="Label" name="module_home_hint" prop:text="Developed and Maintained by: Dave John T. Sastre." prop:role="muted-text"></anvil-component>
       </anvil-component>
       <anvil-component type="Transaction_Tracker_System.Stocks" name="stocks_view" prop:visible="false"></anvil-component>
       <anvil-component type="Transaction_Tracker_System.Inventory" name="inventory_view" prop:visible="false"></anvil-component>
       <anvil-component type="FlowPanel" name="dashboard_heading" prop:role="dashboard-heading">
         <anvil-component type="ColumnPanel" name="heading_text">
-          <anvil-component type="Label" name="dashboard_title" prop:text="Transaction tracker" prop:role="dashboard-title"></anvil-component>
+          <anvil-component type="Label" name="dashboard_title" prop:text="Transaction Tracker" prop:role="dashboard-title"></anvil-component>
           <anvil-component type="Label" name="welcome_label" prop:role="muted-text"></anvil-component>
         </anvil-component>
         <div class="dashboard-heading-action">
