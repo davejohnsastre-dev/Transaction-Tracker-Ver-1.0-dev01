@@ -1271,14 +1271,20 @@ input.anvil-role-inventory-search {
   white-space: nowrap;
 }
 
-/* The inventory sheet is designed to use the full browser workspace. */
+/* Keep the Inventory form inside the normal page flow. */
 .inventory-page {
   box-sizing: border-box;
-  position: relative;
-  left: 50%;
-  width: calc(100vw - 32px);
+  position: static;
+  width: 100%;
+  max-width: 100%;
+  transform: none;
+}
+
+/* Match the reference app's full browser workspace layout. */
+.page-main {
+  box-sizing: border-box;
+  width: calc(100% - 32px);
   max-width: none;
-  transform: translateX(-50%);
 }
 
 .inventory-cell .anvil-label {
@@ -1691,4 +1697,11 @@ input.anvil-role-inventory-search {
   .anvil-role-record-entry-card {
     padding: 20px;
   }
+}
+
+/* Keep the main workspace wide after the desktop layout media rules. */
+.page-main {
+  box-sizing: border-box;
+  width: calc(100% - 32px);
+  max-width: none;
 }
