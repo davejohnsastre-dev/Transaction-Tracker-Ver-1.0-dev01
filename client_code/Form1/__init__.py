@@ -14,6 +14,9 @@ INSTALL_PROMPT_KEY = "__transaction_tracker_install_prompt"
 class Form1(Form1Template):
   def __init__(self, auth_result=None, **properties):
     super().__init__(**properties)
+    self.inventory_view.visible = False
+    self.dashboard_heading.visible = False
+    self.records_card.visible = False
     self.session = {"username": "", "session_token": "", "name": "", "read_only": False, "role": ""}
     if auth_result and auth_result.get("sessionToken"):
       self.session = {
@@ -246,6 +249,9 @@ class Form1(Form1Template):
       self.session = {"username": "", "session_token": "", "name": "", "read_only": False, "role": ""}
       self.login_panel.visible = True
       self.app_panel.visible = False
+      self.inventory_view.visible = False
+      self.dashboard_heading.visible = False
+      self.records_card.visible = False
       self.transaction_button.visible = False
       self.change_pin_button.visible = False
       self.inventory_button.visible = False

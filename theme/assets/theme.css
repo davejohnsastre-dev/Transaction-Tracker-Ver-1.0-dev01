@@ -79,8 +79,9 @@ body {
 }
 
 .page-main {
-  width: min(1044px, calc(100% - 32px));
-  max-width: 1044px;
+  box-sizing: border-box;
+  width: calc(100% - 32px);
+  max-width: none;
   margin: 0 auto;
   padding: 40px 0 64px;
 }
@@ -1124,12 +1125,16 @@ textarea.anvil-text-area:disabled,
 
 .inventory-page {
   box-sizing: border-box;
+  display: block;
+  min-width: 0;
   width: 100%;
   padding: 0 0 24px;
 }
 
 .inventory-card {
   box-sizing: border-box;
+  display: block;
+  min-width: 0;
   width: 100%;
   padding: 20px;
   border: 1px solid #dedfe3;
@@ -1145,6 +1150,36 @@ textarea.anvil-text-area:disabled,
   align-items: end;
   gap: 24px;
   margin-bottom: 52px;
+}
+
+.anvil-role-inventory-host {
+  flex: 1 1 auto;
+  align-self: stretch;
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  width: 100%;
+}
+
+.anvil-role-app-shell,
+.anvil-role-app-shell > .anvil-panel-section,
+.anvil-role-app-shell > .anvil-slot {
+  box-sizing: border-box;
+  align-self: stretch;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
+}
+
+.anvil-role-records-card-wide,
+.anvil-role-records-card-wide > .anvil-panel-section,
+.anvil-role-records-card-wide > .anvil-slot {
+  box-sizing: border-box;
+  align-self: stretch;
+  display: block;
+  min-width: 0;
+  width: 100%;
+  max-width: none;
 }
 
 .inventory-sheet-control {
@@ -1285,6 +1320,81 @@ input.anvil-role-inventory-search {
   box-sizing: border-box;
   width: calc(100% - 32px);
   max-width: none;
+}
+
+/* Final full-width rules for the Transaction Tracker records card. */
+.anvil-role-records-card-wide {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: none;
+  padding: 24px;
+  border: 1px solid var(--blank-border);
+  border-radius: 8px;
+  background: var(--blank-surface);
+}
+
+.anvil-role-records-card-wide .anvil-role-toolbar,
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table,
+.anvil-role-records-card-wide .anvil-role-pagination-bar {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+}
+
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table {
+  display: block;
+}
+
+/* Keep the Transaction Tracker content full width after responsive overrides. */
+.anvil-role-records-card-wide {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: none;
+  padding: 24px;
+  border: 1px solid var(--blank-border);
+  border-radius: 8px;
+  background: var(--blank-surface);
+}
+
+.anvil-role-records-card-wide .anvil-role-toolbar,
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table,
+.anvil-role-records-card-wide .anvil-role-pagination-bar {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+}
+
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table {
+  display: block;
+}
+
+/* The Transaction Tracker card and its inner controls must stretch with the page. */
+.anvil-role-records-card-wide {
+  padding: 24px;
+  border: 1px solid var(--blank-border);
+  border-radius: 8px;
+  background: var(--blank-surface);
+}
+
+.anvil-role-records-card-wide .anvil-role-toolbar,
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table,
+.anvil-role-records-card-wide .anvil-role-pagination-bar {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  max-width: none;
+}
+
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table {
+  display: block;
 }
 
 .inventory-cell .anvil-label {
@@ -1645,8 +1755,8 @@ input.anvil-role-inventory-search {
   }
 
   .page-main {
-    width: min(1044px, calc(100% - 32px));
-    max-width: 1044px;
+    width: calc(100% - 32px);
+    max-width: none;
     padding: 20px 0 24px;
   }
 
@@ -1704,4 +1814,30 @@ input.anvil-role-inventory-search {
   box-sizing: border-box;
   width: calc(100% - 32px);
   max-width: none;
+}
+
+/* Final full-width rules for the Transaction Tracker records card. */
+.anvil-role-records-card-wide {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: none;
+  padding: 24px;
+  border: 1px solid var(--blank-border);
+  border-radius: 8px;
+  background: var(--blank-surface);
+}
+
+.anvil-role-records-card-wide .anvil-role-toolbar,
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table,
+.anvil-role-records-card-wide .anvil-role-pagination-bar {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+}
+
+.anvil-role-records-card-wide .records-table-viewport,
+.anvil-role-records-card-wide .anvil-role-records-table {
+  display: block;
 }

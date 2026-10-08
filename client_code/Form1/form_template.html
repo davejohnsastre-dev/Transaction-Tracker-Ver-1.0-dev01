@@ -19,7 +19,7 @@
       <anvil-component type="Button" name="scan_qr_button" prop:text="Scan transaction QR code" prop:role="secondary-button"></anvil-component>
       <anvil-component type="Label" name="login_message" prop:role="error-text"></anvil-component>
     </anvil-component>
-    <anvil-component type="ColumnPanel" name="app_panel" prop:visible="false">
+    <anvil-component type="ColumnPanel" name="app_panel" prop:role="app-shell" prop:visible="false">
       <anvil-component type="ColumnPanel" name="module_home_panel" prop:role="module-home" prop:visible="false">
         <anvil-component type="Label" name="module_home_heading" prop:text="Select a function from the header to continue" prop:role="section-title"></anvil-component>
         <br />
@@ -27,43 +27,6 @@
         <anvil-component type="Label" name="module_home_hint" prop:text="Developed and Maintained by: Dave John T. Sastre." prop:role="developer-credit" prop:italic="true"></anvil-component>
       </anvil-component>
       <anvil-component type="Transaction_Tracker_System.Stocks" name="stocks_view" prop:visible="false"></anvil-component>
-      <anvil-component type="Transaction_Tracker_System.Inventory" name="inventory_view" prop:visible="false"></anvil-component>
-      <anvil-component type="FlowPanel" name="dashboard_heading" prop:role="dashboard-heading">
-        <anvil-component type="ColumnPanel" name="heading_text">
-          <anvil-component type="Label" name="dashboard_title" prop:text="Transaction Tracker" prop:role="dashboard-title"></anvil-component>
-          <anvil-component type="Label" name="welcome_label" prop:role="muted-text"></anvil-component>
-        </anvil-component>
-        <div class="dashboard-heading-action">
-          <anvil-component type="Button" name="new_record_button" prop:text="+ New transaction" prop:role="primary-button"></anvil-component>
-        </div>
-      </anvil-component>
-      <anvil-component type="ColumnPanel" name="records_card" prop:role="card">
-        <anvil-component type="FlowPanel" name="toolbar" prop:role="toolbar">
-          <anvil-component type="TextBox" name="search_box" prop:placeholder="Search anything..."></anvil-component>
-          <anvil-component type="DropDown" name="type_filter" prop:include_placeholder="true" prop:placeholder="All types"></anvil-component>
-          <anvil-component type="DropDown" name="status_filter" prop:include_placeholder="true" prop:placeholder="All statuses"></anvil-component>
-          <div class="toolbar-actions">
-            <anvil-component type="Button" name="search_button" prop:text="Search" prop:role="primary-button"></anvil-component>
-            <anvil-component type="Button" name="clear_button" prop:text="Clear" prop:role="secondary-button"></anvil-component>
-            <anvil-component type="Button" name="refresh_button" prop:text="Refresh" prop:role="secondary-button"></anvil-component>
-          </div>
-        </anvil-component>
-        <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
-        <div class="records-table-viewport">
-          <div class="records-table-header">
-            <anvil-component type="Button" name="sort_created_button" prop:text="↓" prop:role="sort-button" prop:tooltip="Newest transactions first"></anvil-component>
-            <anvil-component type="Label" name="records_header_details" prop:text="Transaction details" prop:role="records-header-details"></anvil-component>
-          </div>
-          <anvil-component type="DataGrid" name="records_grid" prop:role="records-table">
-            <anvil-component type="RepeatingPanel" name="records_panel" prop:item_template="Transaction_Tracker_System.TransactionRow"></anvil-component>
-          </anvil-component>
-        </div>
-        <anvil-component type="FlowPanel" name="pagination_bar" prop:role="pagination-bar">
-          <anvil-component type="Label" name="page_info" prop:role="muted-text"></anvil-component>
-          <anvil-component type="Button" name="previous_button" prop:text="Previous" prop:role="secondary-button"></anvil-component>
-          <anvil-component type="Button" name="next_button" prop:text="Next" prop:role="secondary-button"></anvil-component>
-        </anvil-component>
-      </anvil-component>
       <anvil-component type="ColumnPanel" name="record_editor" prop:role="record-entry-view" prop:visible="false">
         <anvil-component type="ColumnPanel" name="record_entry_card" prop:role="record-entry-card">
           <anvil-component type="Label" name="editor_heading" prop:text="Create new transaction" prop:role="section-title"></anvil-component>
@@ -263,6 +226,43 @@
         <anvil-component type="Label" name="print_page_number" prop:text="1/1" prop:role="print-page-number"></anvil-component>
       </anvil-component>
     </anvil-component>
+    <anvil-component type="FlowPanel" name="dashboard_heading" prop:role="dashboard-heading" prop:visible="false">
+      <anvil-component type="ColumnPanel" name="heading_text">
+        <anvil-component type="Label" name="dashboard_title" prop:text="Transaction Tracker" prop:role="dashboard-title"></anvil-component>
+        <anvil-component type="Label" name="welcome_label" prop:role="muted-text"></anvil-component>
+      </anvil-component>
+      <div class="dashboard-heading-action">
+        <anvil-component type="Button" name="new_record_button" prop:text="+ New transaction" prop:role="primary-button"></anvil-component>
+      </div>
+    </anvil-component>
+    <anvil-component type="ColumnPanel" name="records_card" prop:role="records-card-wide" prop:visible="false">
+      <anvil-component type="FlowPanel" name="toolbar" prop:role="toolbar">
+        <anvil-component type="TextBox" name="search_box" prop:placeholder="Search anything..."></anvil-component>
+        <anvil-component type="DropDown" name="type_filter" prop:include_placeholder="true" prop:placeholder="All types"></anvil-component>
+        <anvil-component type="DropDown" name="status_filter" prop:include_placeholder="true" prop:placeholder="All statuses"></anvil-component>
+        <div class="toolbar-actions">
+          <anvil-component type="Button" name="search_button" prop:text="Search" prop:role="primary-button"></anvil-component>
+          <anvil-component type="Button" name="clear_button" prop:text="Clear" prop:role="secondary-button"></anvil-component>
+          <anvil-component type="Button" name="refresh_button" prop:text="Refresh" prop:role="secondary-button"></anvil-component>
+        </div>
+      </anvil-component>
+      <anvil-component type="Label" name="records_message" prop:role="error-text" prop:visible="false"></anvil-component>
+      <div class="records-table-viewport">
+        <div class="records-table-header">
+          <anvil-component type="Button" name="sort_created_button" prop:text="↓" prop:role="sort-button" prop:tooltip="Newest transactions first"></anvil-component>
+          <anvil-component type="Label" name="records_header_details" prop:text="Transaction details" prop:role="records-header-details"></anvil-component>
+        </div>
+        <anvil-component type="DataGrid" name="records_grid" prop:role="records-table">
+          <anvil-component type="RepeatingPanel" name="records_panel" prop:item_template="Transaction_Tracker_System.TransactionRow"></anvil-component>
+        </anvil-component>
+      </div>
+      <anvil-component type="FlowPanel" name="pagination_bar" prop:role="pagination-bar">
+        <anvil-component type="Label" name="page_info" prop:role="muted-text"></anvil-component>
+        <anvil-component type="Button" name="previous_button" prop:text="Previous" prop:role="secondary-button"></anvil-component>
+        <anvil-component type="Button" name="next_button" prop:text="Next" prop:role="secondary-button"></anvil-component>
+      </anvil-component>
+    </anvil-component>
+    <anvil-component type="Transaction_Tracker_System.Inventory" name="inventory_view" prop:role="inventory-host" prop:visible="false"></anvil-component>
   </anvil-block>
   <anvil-block slot="title">
     <anvil-component type="Label" name="page_title" prop:text="MUNICIPAL ASSESSOR'S OFFICE" prop:role="h1"></anvil-component>
