@@ -1176,7 +1176,9 @@ input.anvil-role-inventory-search {
 }
 
 .inventory-table-viewport {
+  box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
   overflow-x: auto;
   border: 1px solid #d5d9df;
   border-radius: 4px;
@@ -1191,7 +1193,13 @@ input.anvil-role-inventory-search {
 
 .inventory-table,
 .anvil-role-inventory-records > div {
+  box-sizing: border-box;
+  width: 100%;
   min-width: 1240px;
+}
+
+.anvil-role-inventory-records {
+  width: 100%;
 }
 
 .inventory-table-header,
@@ -1246,6 +1254,7 @@ input.anvil-role-inventory-search {
   display: grid;
   grid-template-columns: var(--inventory-grid-columns);
   align-items: center;
+  width: 100%;
   min-width: 1240px;
   min-height: 38px;
   border-bottom: 1px solid #e4e7eb;
@@ -1260,6 +1269,16 @@ input.anvil-role-inventory-search {
   padding: 3px 10px;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* The inventory sheet is designed to use the full browser workspace. */
+.inventory-page {
+  box-sizing: border-box;
+  position: relative;
+  left: 50%;
+  width: calc(100vw - 32px);
+  max-width: none;
+  transform: translateX(-50%);
 }
 
 .inventory-cell .anvil-label {
