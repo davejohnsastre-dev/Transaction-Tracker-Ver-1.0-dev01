@@ -1095,30 +1095,7 @@ class Form1(Form1Template):
     def print_now(_timestamp=None):
       window.print()
 
-    def wait_for_qr(_timestamp=None):
-      qr_image = anvil.js.get_dom_node(self.print_qr_code)
-
-      def qr_ready(_event=None):
-        qr_image.removeEventListener("load", qr_ready_handler)
-        qr_image.removeEventListener("error", qr_error_handler)
-        window.requestAnimationFrame(anvil.js.report_exceptions(print_now))
-
-      def qr_failed(_event=None):
-        qr_image.removeEventListener("load", qr_ready_handler)
-        qr_image.removeEventListener("error", qr_error_handler)
-        window.removeEventListener("afterprint", afterprint_handler)
-        self.print_slip.visible = False
-        self._set_message(self.records_message, "The QR code could not be loaded. Please try printing again.")
-
-      qr_ready_handler = anvil.js.report_exceptions(qr_ready)
-      qr_error_handler = anvil.js.report_exceptions(qr_failed)
-      if getattr(qr_image, "complete", False) and getattr(qr_image, "naturalWidth", 0):
-        qr_ready()
-      else:
-        qr_image.addEventListener("load", qr_ready_handler)
-        qr_image.addEventListener("error", qr_error_handler)
-
-    window.requestAnimationFrame(anvil.js.report_exceptions(wait_for_qr))
+    window.setTimeout(anvil.js.report_exceptions(print_now), 400)
 
   @handle("search_button", "click")
   def search_button_click(self, **event_args):

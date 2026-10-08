@@ -14,6 +14,10 @@
   --anvil-banner-height: %anvil-banner-height%;
 }
 
+.anvil-role-developer-credit {
+  color: red;
+}
+
 body {
   min-height: 100vh;
   min-height: calc(100vh - var(--anvil-banner-height, 0px));
