@@ -1,26 +1,24 @@
-<anvil-form container="FlowPanel" prop:role="inventory-sheet-row">
-  <anvil-component type="Label" name="row_number_label" prop:role="inventory-cell" bind:text="self.item['row_number']"></anvil-component>
-  <anvil-component type="Label" name="serial_label" prop:role="inventory-cell" bind:text="self.item['serial_number']"></anvil-component>
-  <anvil-component type="Label" name="item_label" prop:role="inventory-cell" bind:text="self.item['article_item']"></anvil-component>
-  <anvil-component type="Label" name="description_label" prop:role="inventory-cell" bind:text="self.item['description']"></anvil-component>
-  <anvil-component type="Label" name="old_property_label" prop:role="inventory-cell" bind:text="self.item['old_property_number']"></anvil-component>
-  <anvil-component type="Label" name="new_property_label" prop:role="inventory-cell" bind:text="self.item['new_property_number']"></anvil-component>
-  <anvil-component type="Label" name="sku_label" prop:role="inventory-cell" bind:text="self.item['sku']"></anvil-component>
-  <anvil-component type="Label" name="unit_value_label" prop:role="inventory-cell" bind:text="self.item['unit_value']"></anvil-component>
-  <anvil-component type="Label" name="quantity_card_label" prop:role="inventory-cell" bind:text="self.item['quantity_card']"></anvil-component>
-  <anvil-component type="Label" name="quantity_count_label" prop:role="inventory-cell" bind:text="self.item['quantity_count']"></anvil-component>
-  <anvil-component type="Label" name="location_label" prop:role="inventory-cell" bind:text="self.item['location']"></anvil-component>
-  <anvil-component type="Label" name="assignee_label" prop:role="inventory-cell" bind:text="self.item['assignee']"></anvil-component>
-  <anvil-component type="FlowPanel" name="remarks_display" prop:role="inventory-remarks-cell">
-    <anvil-component type="Button" name="edit_remarks_button" prop:role="inventory-remarks-button" bind:text="self.item['remarks']"></anvil-component>
-  </anvil-component>
-  <anvil-component type="FlowPanel" name="remarks_editor" prop:role="inventory-remarks-editor" prop:visible="false">
-    <anvil-component type="TextBox" name="remarks_box" prop:placeholder="Remarks"></anvil-component>
-    <anvil-component type="Button" name="save_remarks_button" prop:text="Save" prop:role="primary-button"></anvil-component>
-    <anvil-component type="Button" name="cancel_remarks_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
-  </anvil-component>
-  <anvil-component type="FlowPanel" name="inventory_actions" prop:role="record-row-actions">
-    <anvil-component type="Button" name="transfer_button" prop:text="Transfer" prop:role="secondary-button"></anvil-component>
-    <anvil-component type="Button" name="status_button" prop:text="Status" prop:role="link-button"></anvil-component>
-  </anvil-component>
-</anvil-form>
+<div class="inventory-row">
+  <span class="inventory-cell inventory-cell-row"><anvil-component type="Label" name="row_number_label" bind:text="self.item['row_number']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="serial_label" bind:text="self.item['serial_number']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="item_label" bind:text="self.item['article_item']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="description_label" bind:text="self.item['description']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="old_property_label" bind:text="self.item['old_property_number']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="new_property_label" bind:text="self.item['new_property_number']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="sku_label" bind:text="self.item['sku']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="unit_value_label" bind:text="self.item['unit_value']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="quantity_card_label" bind:text="self.item['quantity_card']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="quantity_count_label" bind:text="self.item['quantity_count']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="location_label" bind:text="self.item['location']"></anvil-component></span>
+  <span class="inventory-cell"><anvil-component type="Label" name="assignee_label" bind:text="self.item['assignee']"></anvil-component></span>
+  <span class="inventory-cell inventory-cell-remarks">
+    <anvil-component type="FlowPanel" name="remarks_display" prop:role="inventory-remarks-cell">
+      <anvil-component type="Button" name="edit_remarks_button" prop:role="inventory-remarks-input" bind:text="self.item['remarks']"></anvil-component>
+    </anvil-component>
+    <anvil-component type="FlowPanel" name="remarks_editor" prop:role="inventory-remarks-editor" prop:visible="false">
+      <anvil-component type="TextBox" name="remarks_box" prop:placeholder="Remarks"></anvil-component>
+      <anvil-component type="Button" name="save_remarks_button" prop:text="Save" prop:role="primary-button"></anvil-component>
+      <anvil-component type="Button" name="cancel_remarks_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+    </anvil-component>
+  </span>
+</div>

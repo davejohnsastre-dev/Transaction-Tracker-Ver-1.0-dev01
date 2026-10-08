@@ -6,9 +6,6 @@ class InventoryRow(InventoryRowTemplate):
   def __init__(self, **properties):
     super().__init__(**properties)
     self.editing_remarks = False
-    can_manage = self.item.get("can_manage", False)
-    self.transfer_button.visible = can_manage
-    self.status_button.visible = can_manage
     self.remarks_editor.visible = False
 
   @handle("edit_remarks_button", "click")
@@ -35,11 +32,3 @@ class InventoryRow(InventoryRowTemplate):
     self.editing_remarks = False
     self.remarks_display.visible = True
     self.remarks_editor.visible = False
-
-  @handle("transfer_button", "click")
-  def transfer_button_click(self, **event_args):
-    self.parent.raise_event("x-transfer-equipment", equipment=self.item)
-
-  @handle("status_button", "click")
-  def status_button_click(self, **event_args):
-    self.parent.raise_event("x-status-equipment", equipment=self.item)

@@ -12,6 +12,7 @@
   --blank-control-disabled: %color:Control Disabled%;
   --blank-surface-muted: %color:Surface Muted%;
   --anvil-banner-height: %anvil-banner-height%;
+  --inventory-grid-columns: 54px 74px 62px 260px 110px 110px 62px 98px 78px 78px 100px 126px minmax(90px, 0.75fr);
 }
 
 .anvil-role-developer-credit {
@@ -1121,187 +1122,190 @@ textarea.anvil-text-area:disabled,
   padding-right: 6px;
 }
 
-.anvil-role-inventory-sheet {
+.inventory-page {
+  box-sizing: border-box;
   width: 100%;
+  padding: 0 0 24px;
 }
 
-.anvil-role-inventory-sheet-heading {
-  margin-bottom: 12px;
-  color: var(--blank-primary-dark);
-  font-weight: 700;
+.inventory-card {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #dedfe3;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(25, 35, 45, 0.12);
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.anvil-role-inventory-toolbar,
-.anvil-role-inventory-toolbar > .anvil-flow-panel {
-  display: grid !important;
-  grid-template-columns: minmax(190px, 1fr) minmax(190px, 1fr) minmax(260px, 1.25fr);
+.inventory-toolbar {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 400px);
+  align-items: end;
+  gap: 24px;
+  margin-bottom: 52px;
+}
+
+.inventory-sheet-control {
+  width: min(100%, 520px);
+}
+
+.inventory-sheet-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
   gap: 14px;
-  align-items: center;
-  margin-bottom: 8px;
 }
 
-.anvil-role-inventory-toolbar > .anvil-component,
-.anvil-role-inventory-toolbar .anvil-dropdown,
-.anvil-role-inventory-toolbar .anvil-text-box {
-  min-width: 0;
-}
-
-.anvil-role-inventory-sheet-help {
+.inventory-control-label {
   display: block;
-  margin: 4px 0 10px;
-  color: var(--blank-muted);
+  margin: 0 0 4px;
+  color: #4b5563;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.anvil-role-inventory-dropdown select,
+input.anvil-role-inventory-search {
+  min-height: 40px;
+  border-color: #d5d9df;
+  border-radius: 4px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+.inventory-table-viewport {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid #d5d9df;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.inventory-filter-help {
+  margin: -34px 0 10px;
+  color: #5f6875;
   font-size: 12px;
 }
 
-.anvil-role-inventory-sheet-viewport {
-  overflow-x: auto;
-  border: 1px solid var(--blank-border);
-  border-radius: 6px;
-  background: var(--blank-surface);
+.inventory-table,
+.anvil-role-inventory-records > div {
+  min-width: 1240px;
 }
 
-.anvil-role-inventory-sheet-header,
-.anvil-role-inventory-sheet-header > .anvil-flow-panel,
-.anvil-role-inventory-sheet-filters,
-.anvil-role-inventory-sheet-filters > .anvil-flow-panel,
-.anvil-role-inventory-sheet-row,
-.anvil-role-inventory-sheet-row > .anvil-flow-panel {
-  display: grid !important;
-  grid-template-columns: 52px 112px 112px 220px 120px 120px 100px 100px 85px 85px 130px 150px minmax(240px, 1fr) 150px;
-  min-width: 1900px;
+.inventory-table-header,
+.inventory-table-filters {
+  display: grid;
+  grid-template-columns: var(--inventory-grid-columns);
   align-items: center;
 }
 
-.anvil-role-inventory-sheet-header {
-  min-height: 38px;
-  padding: 0 8px;
-  box-sizing: border-box;
-  border-bottom: 1px solid var(--blank-border);
-  background: var(--blank-surface-muted);
-  color: var(--blank-primary-dark);
+.inventory-table-header {
+  min-height: 35px;
+  border-bottom: 1px solid #d5d9df;
+  background: #f8f9fa;
+  color: #263238;
   font-size: 12px;
-  font-weight: 750;
+  font-weight: 600;
 }
 
-.anvil-role-inventory-sheet-header > .anvil-label,
-.anvil-role-inventory-sheet-header > .anvil-flow-panel > .anvil-label {
-  padding: 0 5px;
-  white-space: nowrap;
+.inventory-table-filters {
+  min-height: 42px;
+  border-bottom: 1px solid #d5d9df;
+  background: #fff;
 }
 
-.anvil-role-inventory-sheet-filters {
-  min-height: 50px;
-  padding: 5px 8px;
+.inventory-filter-cell {
   box-sizing: border-box;
-  border-bottom: 1px solid var(--blank-border);
-  background: var(--blank-surface);
-}
-
-.anvil-role-inventory-sheet-filters > .anvil-text-box,
-.anvil-role-inventory-sheet-filters > .anvil-flow-panel > .anvil-text-box {
   min-width: 0;
-  padding: 0 5px;
+  padding: 3px 6px;
 }
 
-.anvil-role-inventory-sheet-filters input.anvil-text-box {
-  min-height: 32px;
+.inventory-table-filters input.anvil-text-box {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 30px;
+  padding: 0 6px;
   font-size: 11px;
 }
 
-.anvil-role-inventory-sheet-list {
-  margin: 0;
+.inventory-table-header span {
+  overflow: hidden;
+  padding: 8px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.anvil-role-inventory-sheet-list > div {
-  min-width: 1900px;
+.anvil-role-inventory-records > div {
+  min-width: 1240px;
 }
 
-.anvil-role-inventory-sheet-row {
-  min-height: 48px;
-  padding: 5px 8px;
+.inventory-row {
   box-sizing: border-box;
-  border-bottom: 1px solid var(--blank-border);
-  background: var(--blank-surface);
-}
-
-.anvil-role-inventory-sheet-row:hover {
-  background: var(--blank-surface-muted);
-}
-
-.anvil-role-inventory-sheet-row > .anvil-label,
-.anvil-role-inventory-sheet-row > .anvil-flow-panel,
-.anvil-role-inventory-sheet-row > .anvil-column-panel,
-.anvil-role-inventory-sheet-row > .anvil-flow-panel > .anvil-label,
-.anvil-role-inventory-sheet-row > .anvil-flow-panel > .anvil-flow-panel,
-.anvil-role-inventory-sheet-row > .anvil-flow-panel > .anvil-column-panel {
-  min-width: 0;
-  padding: 0 5px;
-  box-sizing: border-box;
-  overflow-wrap: anywhere;
-}
-
-.anvil-role-inventory-cell {
-  color: var(--blank-text);
+  display: grid;
+  grid-template-columns: var(--inventory-grid-columns);
+  align-items: center;
+  min-width: 1240px;
+  min-height: 38px;
+  border-bottom: 1px solid #e4e7eb;
+  color: #343a40;
   font-size: 12px;
 }
 
-.anvil-role-inventory-remarks-cell,
-.anvil-role-inventory-remarks-editor {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.inventory-cell {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
+  padding: 3px 10px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.anvil-role-inventory-remarks-cell > .anvil-flow-panel,
-.anvil-role-inventory-remarks-editor > .anvil-flow-panel,
-.anvil-role-record-row-actions > .anvil-flow-panel {
-  display: flex;
-  align-items: center;
-  gap: 4px;
+.inventory-cell .anvil-label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.anvil-role-inventory-remarks-button > button {
+.inventory-cell-row .anvil-label {
+  text-align: center;
+}
+
+.anvil-role-inventory-remarks-input > button {
+  display: block;
+  box-sizing: border-box;
   width: 100%;
   min-height: 30px;
-  padding: 3px 6px;
+  padding: 4px 6px;
   overflow: hidden;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  border-color: transparent;
+  border-radius: 3px;
   background: transparent;
-  color: var(--blank-text);
+  color: #343a40;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.anvil-role-inventory-remarks-button > button:hover,
-.anvil-role-inventory-remarks-button > button:focus {
-  border-color: var(--blank-border);
-  background: var(--blank-control-bg);
-}
-
-.anvil-role-inventory-remarks-editor .anvil-text-box {
-  min-width: 0;
-  flex: 1 1 auto;
-}
-
-.anvil-role-inventory-remarks-editor .anvil-button > button,
-.anvil-role-record-row-actions .anvil-button > button {
-  min-height: 30px;
-  padding: 0 7px;
-  font-size: 11px;
+.anvil-role-inventory-remarks-input > button:hover,
+.anvil-role-inventory-remarks-input > button:focus {
+  border-color: #d5d9df;
+  background: #fff;
+  color: #343a40;
 }
 
 .anvil-role-inventory-empty-state {
   display: block;
-  min-width: 1900px;
-  padding: 22px 14px;
-  color: var(--blank-muted);
+  min-width: 1240px;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  color: #75808c;
   font-size: 13px;
-}
-
-.anvil-role-inventory-sheet .anvil-role-card {
-  margin-top: 18px;
+  text-align: left;
 }
 
 .anvil-role-audit-modal .anvil-role-audit-row {
