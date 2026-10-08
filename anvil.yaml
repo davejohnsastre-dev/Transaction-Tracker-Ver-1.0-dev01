@@ -145,6 +145,28 @@ db_schema:
     indexes: []
     server: full
     title: Inventory_Audit_Logs
+  Inventory_Category:
+    client: none
+    columns:
+    - admin_ui: {}
+      client_hidden: null
+      name: name
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: description
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: active
+      type: bool
+    - admin_ui: {}
+      client_hidden: null
+      name: sort_order
+      type: number
+    indexes: []
+    server: full
+    title: Inventory_Category
   Inventory_Equipment:
     client: none
     columns:
@@ -158,6 +180,16 @@ db_schema:
       type: string
     - admin_ui: {}
       client_hidden: null
+      name: office
+      target: Offices
+      type: link_single
+    - admin_ui: {}
+      client_hidden: null
+      name: category
+      target: Inventory_Category
+      type: link_single
+    - admin_ui: {}
+      client_hidden: null
       name: manufacturer
       type: string
     - admin_ui: {}
@@ -168,6 +200,30 @@ db_schema:
       client_hidden: null
       name: serial_number
       type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: old_property_number
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: new_property_number
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: sku
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: unit_value
+      type: number
+    - admin_ui: {}
+      client_hidden: null
+      name: quantity_card
+      type: number
+    - admin_ui: {}
+      client_hidden: null
+      name: quantity_count
+      type: number
     - admin_ui: {}
       client_hidden: null
       name: purchase_date
@@ -257,6 +313,28 @@ db_schema:
     indexes: []
     server: full
     title: Inventory_Equipment_Statuses
+  Offices:
+    client: none
+    columns:
+    - admin_ui: {}
+      client_hidden: null
+      name: name
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: code
+      type: string
+    - admin_ui: {}
+      client_hidden: null
+      name: active
+      type: bool
+    - admin_ui: {}
+      client_hidden: null
+      name: sort_order
+      type: number
+    indexes: []
+    server: full
+    title: Offices
   Stocks_Additions:
     client: none
     columns:

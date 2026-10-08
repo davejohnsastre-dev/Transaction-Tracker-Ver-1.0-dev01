@@ -3,14 +3,34 @@ from anvil import *
 import anvil.server
 
 
+FILTER_FIELDS = {
+  "row_filter": "row_number",
+  "serial_filter": "serial_number",
+  "item_filter": "article_item",
+  "description_filter": "description",
+  "old_property_filter": "old_property_number",
+  "new_property_filter": "new_property_number",
+  "sku_filter": "sku",
+  "unit_value_filter": "unit_value",
+  "quantity_card_filter": "quantity_card",
+  "quantity_count_filter": "quantity_count",
+  "location_filter": "location",
+  "assignee_filter": "assignee",
+  "remarks_filter": "remarks",
+}
+
+
 class Inventory(InventoryTemplate):
   def __init__(self, session=None, **properties):
     super().__init__(**properties)
     self.session = session or {}
     self.can_manage = False
     self.selected_equipment = None
+    self.offices = []
+    self.categories = []
     self.equipment_panel.add_event_handler("x-transfer-equipment", self.transfer_equipment)
     self.equipment_panel.add_event_handler("x-status-equipment", self.status_equipment)
+    self.equipment_panel.add_event_handler("x-update-remarks", self.update_remarks)
     if self.session.get("session_token"):
       self._load_inventory()
 
@@ -27,14 +47,49 @@ class Inventory(InventoryTemplate):
     self.add_message.text = message or ""
     self.add_message.visible = bool(message)
 
-  def _load_inventory(self):
-    result = anvil.server.call("get_inventory", self.session.get("session_token", ""))
+  def _lookup_items(self, values):
+    return [(item["name"], item["id"]) for item in values]
+
+  def _selected_value(self, box):
+    return box.selected_value if box.selected_value else None
+
+  def _filters(self):
+    return {
+      field: getattr(self, component).text or ""
+      for component, field in FILTER_FIELDS.items()
+    }
+
+  def _load_inventory(self, **event_args):
+    selected_office = self._selected_value(self.office_filter)
+    selected_category = self._selected_value(self.category_filter)
+    filters = self._filters()
+    row_filter = filters.pop("row_number", "")
+    result = anvil.server.call(
+      "get_inventory",
+      self.session.get("session_token", ""),
+      selected_office,
+      selected_category,
+      self.search_box.text or "",
+      filters,
+    )
     if not result.get("success"):
       self._set_message(result.get("message", "Unable to load inventory."))
       return
     self.can_manage = result.get("can_manage", False)
+    self.offices = result.get("offices", [])
+    self.categories = result.get("categories", [])
+    self.office_filter.items = self._lookup_items(self.offices)
+    self.category_filter.items = self._lookup_items(self.categories)
+    self.office_box.items = self._lookup_items(self.offices)
+    self.category_box.items = self._lookup_items(self.categories)
+    self.office_filter.selected_value = selected_office
+    self.category_filter.selected_value = selected_category
     self.add_equipment_panel.visible = self.can_manage
-    self.equipment_panel.items = [dict(item, can_manage=self.can_manage) for item in result.get("equipment", [])]
+    items = [dict(item, row_number=index + 1, can_manage=self.can_manage)
+             for index, item in enumerate(result.get("equipment", []))]
+    if row_filter:
+      items = [item for item in items if row_filter.lower() in str(item["row_number"]).lower()]
+    self.equipment_panel.items = items
     self.audit_panel.items = result.get("audits", [])
     statuses = result.get("statuses", [])
     self.new_status_box.items = statuses
@@ -44,7 +99,83 @@ class Inventory(InventoryTemplate):
     self.transfer_user_box.items = [
       (item["name"], item["username"]) for item in result.get("users", [])
     ]
+    if selected_office and selected_category:
+      self.empty_label.text = "No inventory records match the selected filters."
+    else:
+      self.empty_label.text = "Please select an office and category above to load inventory items..."
+    self.empty_label.visible = not bool(items)
     self._set_message("")
+
+  def _reload_from_filter(self, **event_args):
+    self._load_inventory()
+
+  @handle("office_filter", "change")
+  def office_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("category_filter", "change")
+  def category_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("search_box", "change")
+  def search_box_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("search_box", "pressed_enter")
+  def search_box_pressed_enter(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("serial_filter", "change")
+  def serial_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("row_filter", "change")
+  def row_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("item_filter", "change")
+  def item_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("description_filter", "change")
+  def description_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("old_property_filter", "change")
+  def old_property_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("new_property_filter", "change")
+  def new_property_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("sku_filter", "change")
+  def sku_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("unit_value_filter", "change")
+  def unit_value_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("quantity_card_filter", "change")
+  def quantity_card_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("quantity_count_filter", "change")
+  def quantity_count_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("location_filter", "change")
+  def location_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("assignee_filter", "change")
+  def assignee_filter_change(self, **event_args):
+    self._reload_from_filter()
+
+  @handle("remarks_filter", "change")
+  def remarks_filter_change(self, **event_args):
+    self._reload_from_filter()
 
   def _open_action(self, equipment, action):
     self.selected_equipment = equipment
@@ -61,6 +192,17 @@ class Inventory(InventoryTemplate):
 
   def status_equipment(self, equipment, **event_args):
     self._open_action(equipment, "Change status")
+
+  def update_remarks(self, equipment, remarks, **event_args):
+    result = anvil.server.call(
+      "update_inventory_remarks",
+      equipment["id"],
+      remarks,
+      self.session.get("session_token", ""),
+    )
+    self._set_message(result.get("message"))
+    if result.get("success"):
+      self._load_inventory()
 
   @handle("add_button", "click")
   def add_button_click(self, **event_args):
@@ -84,10 +226,23 @@ class Inventory(InventoryTemplate):
         self.new_status_box.selected_value,
         self.new_notes_box.text,
         self.session.get("session_token", ""),
+        self._selected_value(self.office_box),
+        self._selected_value(self.category_box),
+        self.old_property_box.text,
+        self.new_property_box.text,
+        self.sku_box.text,
+        self.unit_value_box.text,
+        self.quantity_card_box.text,
+        self.quantity_count_box.text,
       )
       self._set_message(result.get("message"))
       if result.get("success"):
-        for box in (self.article_item_box, self.description_box, self.manufacturer_box, self.model_box, self.serial_box, self.location_box, self.new_notes_box):
+        for box in (
+          self.article_item_box, self.description_box, self.manufacturer_box,
+          self.model_box, self.serial_box, self.location_box, self.old_property_box,
+          self.new_property_box, self.sku_box, self.unit_value_box,
+          self.quantity_card_box, self.quantity_count_box, self.new_notes_box,
+        ):
           box.text = ""
         self._load_inventory()
       else:

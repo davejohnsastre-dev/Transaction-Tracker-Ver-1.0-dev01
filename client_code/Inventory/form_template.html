@@ -1,38 +1,90 @@
 ---
 custom_component: true
 ---
-<anvil-form container="ColumnPanel">
-    <anvil-component type="Label" name="message_label" prop:role="settings-message" prop:visible="false"></anvil-component>
-    <anvil-component type="ColumnPanel" name="add_equipment_panel" prop:role="card" prop:visible="false">
-      <anvil-component type="Label" name="add_heading" prop:text="Add equipment" prop:role="section-title"></anvil-component>
-      <anvil-component type="Label" name="add_message" prop:role="error-text" prop:visible="false"></anvil-component>
-      <anvil-component type="TextBox" name="article_item_box" prop:placeholder="Article item *"></anvil-component>
-      <anvil-component type="TextBox" name="description_box" prop:placeholder="Description *"></anvil-component>
-      <anvil-component type="TextBox" name="manufacturer_box" prop:placeholder="Manufacturer"></anvil-component>
-      <anvil-component type="TextBox" name="model_box" prop:placeholder="Model"></anvil-component>
-      <anvil-component type="TextBox" name="serial_box" prop:placeholder="Serial number"></anvil-component>
-      <anvil-component type="TextBox" name="location_box" prop:placeholder="Office / location"></anvil-component>
-      <anvil-component type="DropDown" name="new_status_box" prop:include_placeholder="true" prop:placeholder="Initial status"></anvil-component>
-      <anvil-component type="TextArea" name="new_notes_box" prop:placeholder="Notes"></anvil-component>
-      <anvil-component type="Button" name="add_button" prop:text="Add equipment" prop:role="primary-button"></anvil-component>
+<anvil-form container="ColumnPanel" prop:role="inventory-sheet">
+  <anvil-component type="Label" name="message_label" prop:role="settings-message" prop:visible="false"></anvil-component>
+  <anvil-component type="Label" name="inventory_heading" prop:text="Select Tab / Sheet to Load:" prop:role="inventory-sheet-heading"></anvil-component>
+  <anvil-component type="FlowPanel" name="inventory_toolbar" prop:role="inventory-toolbar">
+    <anvil-component type="DropDown" name="office_filter" prop:include_placeholder="true" prop:placeholder="-- Select Office --"></anvil-component>
+    <anvil-component type="DropDown" name="category_filter" prop:include_placeholder="true" prop:placeholder="-- Select Category --"></anvil-component>
+    <anvil-component type="TextBox" name="search_box" prop:placeholder="Search records..."></anvil-component>
+  </anvil-component>
+  <anvil-component type="Label" name="filter_help" prop:text="Enter 'empty' or 'null' in Search records or the remarks filter to find rows without remarks." prop:role="inventory-sheet-help"></anvil-component>
+  <anvil-component type="FlowPanel" name="inventory_viewport" prop:role="inventory-sheet-viewport">
+    <anvil-component type="FlowPanel" name="inventory_header" prop:role="inventory-sheet-header">
+      <anvil-component type="Label" name="row_header" prop:text="ROW"></anvil-component>
+      <anvil-component type="Label" name="serial_header" prop:text="SERIAL"></anvil-component>
+      <anvil-component type="Label" name="item_header" prop:text="ITEM"></anvil-component>
+      <anvil-component type="Label" name="description_header" prop:text="DESCRIPTION"></anvil-component>
+      <anvil-component type="Label" name="old_property_header" prop:text="OLD PROP #"></anvil-component>
+      <anvil-component type="Label" name="new_property_header" prop:text="NEW PROP #"></anvil-component>
+      <anvil-component type="Label" name="sku_header" prop:text="SKU"></anvil-component>
+      <anvil-component type="Label" name="unit_value_header" prop:text="UNIT VALUE"></anvil-component>
+      <anvil-component type="Label" name="quantity_card_header" prop:text="Q/CARD"></anvil-component>
+      <anvil-component type="Label" name="quantity_count_header" prop:text="Q/COUNT"></anvil-component>
+      <anvil-component type="Label" name="location_header" prop:text="LOCATION"></anvil-component>
+      <anvil-component type="Label" name="assignee_header" prop:text="ACC PERSON"></anvil-component>
+      <anvil-component type="Label" name="remarks_header" prop:text="REMARKS (Click to Edit)"></anvil-component>
+      <anvil-component type="Label" name="actions_header" prop:text=""></anvil-component>
     </anvil-component>
-    <anvil-component type="ColumnPanel" name="action_panel" prop:role="card" prop:visible="false">
-      <anvil-component type="Label" name="action_heading" prop:role="section-title"></anvil-component>
-      <anvil-component type="Label" name="action_message" prop:role="error-text"></anvil-component>
-      <anvil-component type="ColumnPanel" name="transfer_fields" prop:visible="false">
-        <anvil-component type="DropDown" name="transfer_user_box" prop:include_placeholder="true" prop:placeholder="Assign to employee"></anvil-component>
-      </anvil-component>
-      <anvil-component type="ColumnPanel" name="status_fields" prop:visible="false">
-        <anvil-component type="DropDown" name="status_box" prop:include_placeholder="true" prop:placeholder="Inventory status"></anvil-component>
-      </anvil-component>
-      <anvil-component type="TextArea" name="action_notes_box" prop:placeholder="Reason or notes"></anvil-component>
-      <anvil-component type="FlowPanel" name="action_buttons" prop:role="form-actions">
-        <anvil-component type="Button" name="action_cancel_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
-        <anvil-component type="Button" name="action_save_button" prop:text="Save change" prop:role="primary-button"></anvil-component>
-      </anvil-component>
+    <anvil-component type="FlowPanel" name="inventory_filters" prop:role="inventory-sheet-filters">
+      <anvil-component type="TextBox" name="row_filter" prop:placeholder="Filter"></anvil-component>
+      <anvil-component type="TextBox" name="serial_filter" prop:placeholder="Filter serial"></anvil-component>
+      <anvil-component type="TextBox" name="item_filter" prop:placeholder="Filter item"></anvil-component>
+      <anvil-component type="TextBox" name="description_filter" prop:placeholder="Filter description"></anvil-component>
+      <anvil-component type="TextBox" name="old_property_filter" prop:placeholder="Filter old prop #"></anvil-component>
+      <anvil-component type="TextBox" name="new_property_filter" prop:placeholder="Filter new prop #"></anvil-component>
+      <anvil-component type="TextBox" name="sku_filter" prop:placeholder="Filter SKU"></anvil-component>
+      <anvil-component type="TextBox" name="unit_value_filter" prop:placeholder="Filter value"></anvil-component>
+      <anvil-component type="TextBox" name="quantity_card_filter" prop:placeholder="Filter Q/Card"></anvil-component>
+      <anvil-component type="TextBox" name="quantity_count_filter" prop:placeholder="Filter Q/Count"></anvil-component>
+      <anvil-component type="TextBox" name="location_filter" prop:placeholder="Filter location"></anvil-component>
+      <anvil-component type="TextBox" name="assignee_filter" prop:placeholder="Filter person"></anvil-component>
+      <anvil-component type="TextBox" name="remarks_filter" prop:placeholder="Filter remarks"></anvil-component>
+      <anvil-component type="Label" name="filter_actions_spacer" prop:text=""></anvil-component>
     </anvil-component>
-    <anvil-component type="Label" name="inventory_heading" prop:text="Equipment register" prop:role="section-title"></anvil-component>
-    <anvil-component type="RepeatingPanel" name="equipment_panel" prop:item_template="Transaction_Tracker_System.InventoryRow" prop:role="inventory-list"></anvil-component>
-    <anvil-component type="Label" name="audit_heading" prop:text="Inventory audit trail" prop:role="section-title"></anvil-component>
-    <anvil-component type="RepeatingPanel" name="audit_panel" prop:item_template="Transaction_Tracker_System.InventoryAuditRow" prop:role="audit-list"></anvil-component>
+    <anvil-component type="RepeatingPanel" name="equipment_panel" prop:item_template="Transaction_Tracker_System.InventoryRow" prop:role="inventory-sheet-list"></anvil-component>
+    <anvil-component type="Label" name="empty_label" prop:text="Please select an office and category above to load inventory items..." prop:role="inventory-empty-state" prop:visible="true"></anvil-component>
+  </anvil-component>
+
+  <anvil-component type="ColumnPanel" name="add_equipment_panel" prop:role="card" prop:visible="false">
+    <anvil-component type="Label" name="add_heading" prop:text="Add equipment" prop:role="section-title"></anvil-component>
+    <anvil-component type="Label" name="add_message" prop:role="error-text" prop:visible="false"></anvil-component>
+    <anvil-component type="DropDown" name="office_box" prop:include_placeholder="true" prop:placeholder="Office *"></anvil-component>
+    <anvil-component type="DropDown" name="category_box" prop:include_placeholder="true" prop:placeholder="Category *"></anvil-component>
+    <anvil-component type="TextBox" name="article_item_box" prop:placeholder="Article item *"></anvil-component>
+    <anvil-component type="TextBox" name="description_box" prop:placeholder="Description *"></anvil-component>
+    <anvil-component type="TextBox" name="serial_box" prop:placeholder="Serial number"></anvil-component>
+    <anvil-component type="TextBox" name="old_property_box" prop:placeholder="Old property number"></anvil-component>
+    <anvil-component type="TextBox" name="new_property_box" prop:placeholder="New property number"></anvil-component>
+    <anvil-component type="TextBox" name="sku_box" prop:placeholder="SKU"></anvil-component>
+    <anvil-component type="TextBox" name="unit_value_box" prop:placeholder="Unit value"></anvil-component>
+    <anvil-component type="TextBox" name="quantity_card_box" prop:placeholder="Q/card"></anvil-component>
+    <anvil-component type="TextBox" name="quantity_count_box" prop:placeholder="Q/count"></anvil-component>
+    <anvil-component type="TextBox" name="manufacturer_box" prop:placeholder="Manufacturer"></anvil-component>
+    <anvil-component type="TextBox" name="model_box" prop:placeholder="Model"></anvil-component>
+    <anvil-component type="TextBox" name="location_box" prop:placeholder="Location"></anvil-component>
+    <anvil-component type="DropDown" name="new_status_box" prop:include_placeholder="true" prop:placeholder="Initial status"></anvil-component>
+    <anvil-component type="TextArea" name="new_notes_box" prop:placeholder="Remarks"></anvil-component>
+    <anvil-component type="Button" name="add_button" prop:text="Add equipment" prop:role="primary-button"></anvil-component>
+  </anvil-component>
+
+  <anvil-component type="ColumnPanel" name="action_panel" prop:role="card" prop:visible="false">
+    <anvil-component type="Label" name="action_heading" prop:role="section-title"></anvil-component>
+    <anvil-component type="Label" name="action_message" prop:role="error-text"></anvil-component>
+    <anvil-component type="ColumnPanel" name="transfer_fields" prop:visible="false">
+      <anvil-component type="DropDown" name="transfer_user_box" prop:include_placeholder="true" prop:placeholder="Assign to employee"></anvil-component>
+    </anvil-component>
+    <anvil-component type="ColumnPanel" name="status_fields" prop:visible="false">
+      <anvil-component type="DropDown" name="status_box" prop:include_placeholder="true" prop:placeholder="Inventory status"></anvil-component>
+    </anvil-component>
+    <anvil-component type="TextArea" name="action_notes_box" prop:placeholder="Reason or notes"></anvil-component>
+    <anvil-component type="FlowPanel" name="action_buttons" prop:role="form-actions">
+      <anvil-component type="Button" name="action_cancel_button" prop:text="Cancel" prop:role="secondary-button"></anvil-component>
+      <anvil-component type="Button" name="action_save_button" prop:text="Save change" prop:role="primary-button"></anvil-component>
+    </anvil-component>
+  </anvil-component>
+
+  <anvil-component type="Label" name="audit_heading" prop:text="Inventory audit trail" prop:role="section-title"></anvil-component>
+  <anvil-component type="RepeatingPanel" name="audit_panel" prop:item_template="Transaction_Tracker_System.InventoryAuditRow" prop:role="audit-list"></anvil-component>
 </anvil-form>
